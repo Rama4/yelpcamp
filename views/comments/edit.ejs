@@ -1,0 +1,70 @@
+<% include ../partials/header %>
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center">Edit comment</h1>
+        <div style="width: 40%; margin: 25px auto;">
+            <form action="/campgrounds/<%= campground_id%>/comments/<%= comment._id %>" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="comment[title]" value="<%=comment.title%>">
+                </div>
+                <div class="form-group">
+                     <textarea class="form-control" type="text" name="comment[text]"><%=comment.text%></textarea>
+                </div>
+                <div class="form-group rating">
+                  <h4>Rating:</h4>
+                  <div class="container-fluid">
+                      <div class="row">
+                          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                            <div class="rateyo-widg-2"></div>
+                            <input type="hidden" value="<%=comment.rating_value%>" name="comment[rating_value]" id="rateyoid">
+                            <!-- rateYo , a jQuery plugin-->
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.js"></script>
+                            <%  var oldVal = comment.rating_value;%>  <!-- variable for passing to ejs (to fill stars with old value)-->
+                            <script>
+                              // function for passing ejs variable to javascript
+                              function htmlDecode(input)
+                              {    // for passing EJS variables to javascript
+                                var e = document.createElement('div');
+                                e.innerHTML = input;
+                                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+                              }
+
+                              // accessing ejs variable in javascript (here, array of comments)
+                              var ov = JSON.parse(htmlDecode("<%= JSON.stringify(oldVal)%>"));
+                              // function for initialising rateYo
+                                $(function ()
+                                {
+                                  $(".rateyo-widg-2").rateYo({
+                                      rating: ov, // putting old value
+                                      starWidth: "25px",
+                                      ratedFill: "#F39C12", //"#e74c3c" -> red
+                                  }).on("rateyo.set", function (e, data)
+                                    {
+                                      var rating = data.rating;
+                                            // set the value in input form
+                                            document.getElementById("rateyoid").value=rating;
+                                            // display the set rating value
+                                            $(".ratometer h4").each(function()
+                                            {
+                                              $(this).text(rating);
+                                            });
+                                    });
+                                });
+                            </script>
+                          </div>
+                          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                              <div class="ratometer">
+                                  <h4>set a rating(old value: <%=comment.rating_value%>)<!-- rating value displayed here--></h4>
+                              </div>
+                          </div>
+                      </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-primary btn-block">Submit</button>
+                </div>
+            </form>
+            <a href="/campgrounds">Go Back</a>
+        </div>
+    </div>
+</div>
+<% include ../partials/footer %>

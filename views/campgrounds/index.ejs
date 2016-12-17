@@ -1,0 +1,31 @@
+<%  include ../partials/header %>
+<div class="container">
+<header class="jumbotron">
+   <div class="container">
+        <h1>This is Camp Grounds</h1>
+        <p> Ooru peru theriyatha edangalila thunda kaanom thuniya kaanom nu alayaporenga ! </p>
+        <p ><a class="btn btn-primary btn-large" href="/campgrounds/new" >Add a New Campground</a></p>
+   </div>
+</header>
+<div class="container">
+
+     <br>
+    <div class="row" style="display:flex; flex-wrap:wrap;">
+        <% for( var i=0; i< camps.length; i++ ) {%>
+            <div class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <img src="<%=camps[i].image%>" >
+                <div class="caption">
+                     <h4> <%=camps[i].name%></h4>
+                </div>
+                <p style="margin:auto; text-align:center;">
+                    <a href="/campgrounds/<%= camps[i]._id %>" class="btn btn-primary"><i class="fa fa-info-circle"></i> More info</a>
+                </p>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+</div>
+
+<% include ../partials/footer  %>

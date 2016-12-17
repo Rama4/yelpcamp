@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>YelpCamp</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body class="landing">
+    <nav class="navbar navbar-inverse transparent-navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">YelpCamp</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav ">    
+                    <li>    <a href="/campgrounds"><span class="glyphicon glyphicon-home"></span> Home</a>    </li>  
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <% if(!currentuser){ %>
+                        <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+                        <li><a href="/register"><span class="glyphicon glyphicon-log-in"></span> Sign Up</a></li>
+                    <% } else { %>
+                        <li><a href="#">Signed In As <%= currentuser.username %></a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="landing-button-div">
+    <h1 id="landing-header"><span class="glyphicon glyphicon-tent"></span> YelpCamp</h1>
+     <h3 id="tagline">Start planning your next trip today</h3>
+                <hr>
+      
+        <a href="/campgrounds" class="btn btn-default btn-lg"><i class="fa fa-tree"></i>View all Camping grounds</a>
+      </div>
+    </div>
+    </body>
+</htmk>
