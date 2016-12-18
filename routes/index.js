@@ -22,7 +22,7 @@ router.post("/register",function(req,res)
   {
     if(err)
     {
-      req.flash("errorArr","No machi that name exists already");
+      req.flash("errorArr","That name exists already");
       res.redirect("/register");
     }
     else

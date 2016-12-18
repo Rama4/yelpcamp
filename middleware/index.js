@@ -69,7 +69,7 @@ mo.isLoggedIn = function (req , res , next)
 {
     if(req.isAuthenticated())
       return next();
-    req.flash("errorArr","you must be logged in to do this machi!");
+    req.flash("errorArr","You need to be logged in to do that");
     res.redirect("/login");
 };
 
