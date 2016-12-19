@@ -87,6 +87,10 @@ app.use(function(req , res , next)
 //with this we don't need to append /campgrounds into following paths i.e /campgrounds/new or /campgrounds/:id
 app.use("/campgrounds/:id/comments",commentroutes);
 app.use("/campgrounds",campgroundroutes);
+app.get("/googled8dc49fbf79a182d.html",function(req,res)
+{
+    res.render("googled8dc49fbf79a182d.html");
+});
 app.use("/",indexroutes);
 
 //============================================================
