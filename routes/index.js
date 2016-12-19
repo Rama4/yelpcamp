@@ -5,7 +5,13 @@ var user = require("../modules/user");
 
 router.get("/",function(req,res)
 {
+  
     res.render("landing");
+});
+
+router.get("/googled8dc49fbf79a182d.html",function(req,res)
+{
+    res.sendFile('googled8dc49fbf79a182d.html');
 });
 
 //********************************
