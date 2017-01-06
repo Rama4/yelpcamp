@@ -8,6 +8,10 @@ var exp = require("express"),
     passport = require("passport"),
     flash = require("connect-flash"),
     LocalStrategy = require("passport-local"),
+    nodemailer = require('nodemailer'),
+    bcrypt = require('bcrypt-nodejs'),
+    async = require('async'),
+    crypto = require('crypto'),
     methodoverride = require("method-override");
     
 //============================================================
@@ -34,6 +38,7 @@ var exp = require("express"),
 // environment variable for database url (safety purpose : to prevent users from deleting others' data )
 var url = process.env.DATABASEURL || 'mongodb://localhost/yelp_camp';
 mongoose.connect(url);
+
 
 
 //Express Settings

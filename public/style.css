@@ -35,6 +35,7 @@
   background-image: url("landing.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+ 
   transition: background 1.5s linear;
    -webkit-backface-visibility: hidden;
   -webkit-transition: background-image 1.5s linear;
@@ -60,43 +61,90 @@ h1 , .lead, .footer{
   width:100%;
   padding:0;
 }
-
-.navbar.navbar-inverse.coolor li a
+.navbar.navbar-inverse.coolor
 {
   color:#d0d0d0;
 }
-
-.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
-    background-color: #191919;
-    color: white;
+/*------------------------------------------------------------------------------------------------*/
+/* navbar menu when loggedin */
+.navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+    color:black;
+    background:white;
+}
+.navbar-login:hover
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+    color:white;
+    background:black;
+}
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
 
- /*------------------------------------------------------------------------------------------------*/
- /*-----         login          -----*/
+.icon-size
+{
+    font-size: 87px;
+}
+.dropdown-menu>li>a {
+    display: block;
+    clear: both;
+    font-weight: 400;
+    padding: 10px;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    text-decoration: none;
+    background-color: black;
+    color: #eee;
+}
+/*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
+.btn-primary {
+    color: white;
+    background-color: #777;
+    border-color: gray; /*set the color you want here*/
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active ,.btn-primary:active:focus , .open>.dropdown-toggle.btn-primary {
+    color: black;
+    background-color: #aaa;
+    border-color: #adadad;
+}
+/*------------------------------------------------------------------------------------------------*/
+/*-----         login          -----*/
 
- /*login form (put icon inside input field)*/
- /* enable absolute positioning */
- .inner-addon {
-     position: relative;
- }
+/*login form (put icon inside input field)*/
+/* enable absolute positioning */
+.inner-addon {
+ position: relative;
+}
 
- /* style icon */
- .inner-addon .glyphicon {
-   position: absolute;
-   padding: 10px;
-   pointer-events: none;
- }
+/* style icon */
+.inner-addon .glyphicon {
+position: absolute;
+padding: 10px;
+pointer-events: none;
+}
 
- /* align icon */
- .left-addon .glyphicon  { left:  0px;}
- .right-addon .glyphicon { right: 0px;}
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
 
- /* add padding  */
- .left-addon input  { padding-left:  30px; }
- .right-addon input { padding-right: 30px; }
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
 
- /*------------------------------------------------------------------------------------------------*/
- /*-----         delete          -----*/
+/*------------------------------------------------------------------------------------------------*/
+/*-----         delete          -----*/
 
 #deleteform
 {

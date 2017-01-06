@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </head>
     <body>
 
@@ -25,8 +26,37 @@
                         <li><a href="/login"><span class="glyphicon glyphicon-log-in"  aria-hidden="true" ></span> Login</a></li>
                         <li><a href="/register"><i class="material-icons md-18">person_add</i> Sign Up</a></li>
                     <% } else { %>
-                        <li><a href="#">Signed In As <%= currentuser.username %></a></li>
-                        <li><a href="/logout">Logout</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <strong><%=currentuser.username%></strong>
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="a">
+                                    <div class="navbar-login">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <p class="text-center">
+                                                    <span class="glyphicon glyphicon-user icon-size"></span>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <p class="text-left"><strong><%=currentuser.username%></strong></p>
+                                                <p class="text-left small"><%=currentuser.email%></p>
+                                                <p class="text-left">
+                                                    <a href="#" class="btn btn-primary btn-block btn-sm">Profile</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="/campgrounds">Account Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                                <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
+                                <li><a href="#">Messages <span class="badge pull-right"> 42 </span></a></li>
+                                <li><a href="/logout">Sign Out <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                            </ul>
+                        </li>
                     <% } %>
                 </ul>
             </div>
