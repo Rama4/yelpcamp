@@ -1,0 +1,124 @@
+<%  include partials/header %>
+
+<style>
+   .img-center {
+	   margin: 0 auto;
+   }
+   footer {
+       margin: 50px 0;
+   }
+   
+   body{
+      background:#f8f8f8;
+   }
+   hr{    
+      border-top: 1px solid black;
+   }
+   .soci {
+        overflow: auto;
+        display: inline-block;    /*centering social buttons inside div*/
+        text-align: initial;
+        padding:0;
+   }
+    
+   .soci li {
+   list-style-type: none;
+      float: left;
+   }
+    
+   .social{
+       background: #205D7A;
+       color: #fff;
+       width: 40px;
+       height: 40px;
+       border-radius: 20px;
+       font-size: 25px;
+       text-align: center;
+       margin-right: 10px;
+       padding-top: 15%;   /*control vertical align of text inside circle*/
+       transition: all 0.2s ease-in-out;
+      }
+   
+   .fa-facebook {
+       background:#3b5998
+   } 
+   .fa-linkedin {
+       background:#007bb6
+   }
+   
+   .fa-github {
+    background: black;
+    /*font-size: 40px;*/
+    /*padding-top: 0;*/
+    color: white;
+    }
+   
+   .fa-google-plus {
+       background:#dd4b39
+   }
+   .soci li a i:hover {
+       opacity: .7;
+   }
+   .page-header{
+      color:black;
+   }
+   img{
+      font-size:100px;
+   }
+
+</style>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Introduction Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">About Us
+                    <small>It's Nice to Meet You!</small>
+                </h1>
+				<p>
+				Yelpcamp is a campground rating app, where users can create their own campgrounds, view and comment on others' campgrounds.<br>
+				This is a small project of Colt Steele's Web Developer Bootcamp course in udemy.<br>
+				It uses the following technologies : Node.js, Express.js, Passport.js, jQuery and MongoDB<br>
+				</p>
+	        </div>
+        </div>
+        
+        <!-- Team Members Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Our Team</h2>
+            </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" height='200' width='200' src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAeRAAAAJDRlOGI2NDdiLWQxNzEtNDI0YS05ZmFlLWQyOThmYTAxMWUxNQ.jpg" alt="">
+                <h3>Rama Narasimhan<br>
+                    <small>C.S Undergraduate at SASTRA University</small>
+                </h3>
+                <p>
+                   Is the designer of this website.<br>
+                   He likes coding and listening to music.
+                </p>
+				<ul class="soci">
+                   <li><a href="https://www.facebook.com/rama.narasimhan.4"><i class="social fa fa-facebook"></i></a></li>
+                   <li><a href="https://www.linkedin.com/in/rama-narasimhan"><i class="social fa fa-linkedin"></i></a></li>
+                   <li><a href="https://github.com/Rama4"><i class="social fa fa-github" aria-hidden="true"></i></a></li>
+                   <li><a href="https://plus.google.com/105848219229324847666" ><i class="social fa fa-google-plus"></i></a></li>
+				</ul>
+            </div>
+        </div>
+        <hr>
+       
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Yelpcamp 2017</p>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </footer>
+    </div>
+    <!-- /.container -->
+<% include partials/footer  %>

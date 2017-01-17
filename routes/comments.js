@@ -24,8 +24,8 @@ var saveAverageRating = function(req,res)
   {
     if(err)
     {
-      res.redirect("/campgrounds");
       req.flash("errorArr",err.message);
+      res.redirect("/campgrounds");
     }
     else
     {
@@ -70,8 +70,8 @@ router.post("/", midw.isLoggedIn ,function(req,res)
     {
         if(err)
         {
-            res.redirect("/campgrounds");
             req.flash("errorArr",err.message);
+            res.redirect("/campgrounds");
         }
         else
         {
@@ -125,14 +125,14 @@ router.post("/:comment_id",midw.checkCommentOwnership,function(req,res)
     {
       if(err)
       {
-          res.redirect("back");
-          req.flash("errorArr",err.message);
+        req.flash("errorArr",err.message);
+        res.redirect("back");
       }
-      else {  // redirect somewhere
-     
-          req.flash("successArr","Comment Updated!");
-          saveAverageRating(req,res);
-          res.redirect("/campgrounds/" + req.params.id );
+      else
+      {  // redirect somewhere
+        req.flash("successArr","Comment Updated!");
+        saveAverageRating(req,res);
+        res.redirect("/campgrounds/" + req.params.id );
       }
     });
 });

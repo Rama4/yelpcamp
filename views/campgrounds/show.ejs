@@ -30,65 +30,67 @@
         </div>
         <div class="col-md-9">
             <div class="thumbnail">
-                <img class="img-responsive photo" src="<%= campground["image"] %>">
+                <img class="img-responsive photo" src="<%=campground["image"]%>">
+                
+                
                 <div class="caption-full">
                     <h4><a><%=campground.name%></a></h4>
                     <pre><%= campground.description %></pre>
                     <p><em>Submitted By <strong><%= campground.author.username %></strong></em></p>
-                    <div class="row">
+                    <div class="row" style="margin-left:0;">
                         <div class="col-md-2">
+                            <div class="row">
                                 <h3 style="color:black;"><strong><%=campground.rating_avg%>  <span style="color:black;">&#9733;</span></strong></h3>
+                            </div>
+                            <div class="row">
+                                <strong>(<%=campground.comments.length%> ratings)</strong>
+                            </div>
                         </div>
 
                                        <!-- Horizontal, rounded -->
 
-                    <div class="col-md-10 container horizontal rounded">
-						<div class="row">
-						  <div class="col-md-1 bar-item">5</div>
-						  <span class="col-md-1 bar-item">&#9733;</span>
-						  <div class="col-md-8 progress-bar horizontal">
-							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-						  </div>
-						  <div class="col-md-2 ff"></div>
-						</div>
-
-						<div class="row">
-						  <div class="col-md-1 bar-item">4</div>
-						  <span class="col-md-1 bar-item">&#9733;</span>
-						  <div class="col-md-8 progress-bar horizontal">
-							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-						  </div>
-						  <div class="col-md-2 ff"></div>
-						</div>
-
-						<div class="row">
-						  <div class="col-md-1 bar-item">3</div>
-						  <span class="col-md-1 bar-item">&#9733;</span>
-						  <div class="col-md-8 progress-bar horizontal">
-							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-						  </div>
-						  <div class="col-md-2 ff"></div>
-						</div>
-
-						<div class="row">
-						  <div class="col-md-1 bar-item">2</div>
-						  <span class="col-md-1 bar-item">&#9733;</span>
-						  <div class="col-md-8 progress-bar horizontal">
-							         <div class="progress-track"><div class="progress-fill color-orange"></div></div>
-						  </div>
-						  <div class="col-md-2 ff"></div>
-						</div>
-
-						<div class="row">
-						  <div class="col-md-1 bar-item">1</div>
-						  <span class="col-md-1 bar-item">&#9733;</span>
-						  <div class="col-md-8 progress-bar horizontal">
-							         <div class="progress-track"><div class="progress-fill color-red"></div></div>
-						  </div>
-						  <div class="col-md-2 ff"></div>
-						</div>
-                    </div>
-
+                        <div class="col-md-10 container horizontal rounded">
+    						<div class="row">
+    						  <div class="col-md-2 bar-item">5 <span>&#9733;</span></div>
+    						  <div class="col-md-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
+    						  </div>
+    						  <div class="col-md-2 ff"></div>
+    						</div>
+    						
+    						<div class="row">
+    						  <div class="col-md-2 bar-item">4 <span>&#9733;</span></div>
+    						  <div class="col-md-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
+    						  </div>
+    						  <div class="col-md-2 ff"></div>
+    						</div>
+    
+    						<div class="row">
+    						  <div class="col-md-2 bar-item">3 <span>&#9733;</span></div>
+    						  <div class="col-md-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
+    						  </div>
+    						  <div class="col-md-2 ff"></div>
+    						</div>
+    						
+    						<div class="row">
+    						  <div class="col-md-2 bar-item">2 <span>&#9733;</span></div>
+    						  <div class="col-md-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-orange"></div></div>
+    						  </div>
+    						  <div class="col-md-2 ff"></div>
+    						</div>
+    						
+    						<div class="row">
+    						  <div class="col-md-2 bar-item">1 <span>&#9733;</span></div>
+    						  <div class="col-md-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-red"></div></div>
+    						  </div>
+    						  <div class="col-md-2 ff"></div>
+    						</div>
+    						
+                        </div>
                     </div>    <!--  row end-->
 
                     <!-- save rating values in a new array BEFORE passing them to script tag -->
@@ -143,10 +145,6 @@
                           c--;
                         });
                     </script>
-
-
-                    <p>(<%=campground.comments.length%> ratings)</p>
-
                      <!-- comment Buttons: -->
                     <%if(currentuser && campground.author.id.equals(currentuser._id)){%>
                     <a class = "btn btn-warning" href="/campgrounds/<%= campground._id %>/edit" >Edit Campground</a>
@@ -183,18 +181,16 @@
                       </div>
                       <!-- comment Buttons: -->
                       <%if(currentuser && com.author.id.equals(currentuser._id)){%>
-
-                      <div class="row">
-                        <div class="col-md-10"></div><!--just to fill space-->
-                         <div class="col-md-1">
-                            <a class = "btn btn-sm btn-warning pull-right" href="/campgrounds/<%=campground._id%>/comments/<%= com._id%>/edit" >Edit</a>
-                        </div>
-                        <div class="col-md-1">
-                            <form id="deleteform" action = "/campgrounds/<%=campground._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
-                                <button class = "btn btn-sm btn-danger"  >Delete</button>
-                            </form>
-                        </div>
-                      </div>
+                        <div class="row">
+							<div class="pull-right but">
+								<form id="deleteform" action = "/campgrounds/<%=campground._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
+								<button class = "btn btn-xs btn-danger"  >Delete</button>
+								</form>
+							</div>
+							<div class="pull-right but">
+								<a class = "btn btn-xs btn-warning" href="/campgrounds/<%=campground._id%>/comments/<%= com._id%>/edit" >Edit</a>
+							</div>
+						</div>
 
                         <%}%>
                     </div>

@@ -47,7 +47,6 @@ router.post("/", midw.isLoggedIn ,function(req,res)
     var desc=req.body.description;
     var rating= "N/A";
     var information = req.body.info;
-    console.log(information);
     var author  = {
       id: req.user._id,
       username : req.user.username
@@ -79,7 +78,6 @@ router.post("/", midw.isLoggedIn ,function(req,res)
 // EDIT Route
 router.get("/:id/edit",midw.checkCampgroundOwnership, function(req,res)
 {
-  console.log(req.params.id);
   campground.findById(req.params.id, function(err, foundCampground){
       res.render("campgrounds/edit", {campground: foundCampground});
   });

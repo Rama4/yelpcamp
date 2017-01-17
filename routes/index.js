@@ -1,22 +1,63 @@
 var express = require("express");
 var router = express.Router({mergeParams : true});
 var passport = require("passport");
+var midw = require("../middleware/index.js"); //index.js is the default file whenever we 'require' something
 var user = require("../modules/user");
+var campground = require("../modules/campground");
 var bcrypt = require('bcrypt-nodejs'),
     async = require('async'),
     crypto = require('crypto');
-
 var helper = require('sendgrid').mail;
     
 router.get("/",function(req,res)
 {
-    res.render("landing");
+    res.render("land");
 });
 
 router.get("/googled8dc49fbf79a182d.html",function(req,res)
 {
     res.sendFile('googled8dc49fbf79a182d.html');
 });
+router.get("/about",function(req,res)
+{
+  res.render("about");
+});
+router.get("/tips",function(req,res)
+{
+  res.render("tips");
+});
+
+router.get("/profile/:username",function(req,res)
+{
+  user.findOne({ username: req.params.username }, function(err, user)
+  {
+    if (!user) {
+      req.flash('errorArr',"user not found!");
+      res.redirect('/campgrounds');
+      
+    }
+    else
+    {
+      campground.find().populate("comments").exec(function(err,allcamps){
+        if(err)
+              console.log(err);
+        else
+        {
+          campground.find({"author.username":req.params.username}).populate("comments").exec(function(err,foundcampground)
+          {
+            if(err)
+                console.log(err);
+            else
+            {
+                    res.render("profile",{user:user , camps:foundcampground, allcamps:allcamps});        
+            }
+          });
+        }
+      });
+    }
+  });
+});
+
 
 //********************************
 //  AUTH routes
@@ -69,6 +110,40 @@ router.get("/logout",function (req,res)
   req.logout();
   res.redirect("/campgrounds");
 });
+// CHANGE PASSWORD
+router.get("/change-password", midw.isLoggedIn ,function(req,res)
+{
+  res.render('change-password');
+});
+
+router.post("/change-password",function(req,res)
+{
+  user.findById(req.user._id).exec(function(err,person)
+  {
+    if(err)
+    {
+      req.flash("errorArr",err.message);
+      res.redirect("/campgrounds");
+    }
+    else
+    {
+      if(req.body.password  == req.body.confirm)
+        { // if both passwords match, then store new password, else redirect
+          person.setPassword(req.body.password,function()
+          {
+            person.save();
+            req.flash("successArr","Password Changed Successfully!");
+            res.redirect("/campgrounds");
+          });
+        }
+        else
+        { 
+          req.flash("errorArr","Password was not changed because they did not match");
+          res.redirect('/campgrounds');  
+        }
+    }
+  });
+});
 
 
 // FORGOT PASSWORD
@@ -109,20 +184,19 @@ router.post('/forgot', function(req, res, next) {
       					'http://' + req.headers.host + '/reset/' + token + '\n\n' +
       					'If you did not request this, please ignore this email and your password will remain unchanged.\n' ),
       mail = new helper.Mail(from_email, subject, to_email, content);
-      
-      var sg = require('sendgrid')(process.env.SENDGRIDKEY1);
+      var sg = require('sendgrid')(process.env.SENDGRIDAPIKEY);
       var request = sg.emptyRequest({
         method: 'POST',
         path: '/v3/mail/send',
         body: mail.toJSON()
       });
       
-      sg.API(request, function(error, response) {
-        console.log(response.statusCode)
+      sg.API(request, function(error, response)
+      {/*console.log(response.statusCode)
         console.log(response.body)
-        console.log(response.headers)
-        	req.flash('successArr', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-      			res.redirect('/campgrounds');
+        console.log(response.headers)*/
+        req.flash('successArr', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+      	res.redirect('/campgrounds');
       });
     }
   ], function(err) {
@@ -183,19 +257,19 @@ router.post('/reset/:token', function(req, res)
           'This is a confirmation that the password for your account \"' + user.username+'\" <'+user.email+ '> has just been changed.\n' ),
       mail = new helper.Mail(from_email, subject, to_email, content);
       
-      var sg = require('sendgrid')(process.env.SENDGRIDKEY1);
+      var sg = require('sendgrid')(process.env.SENDGRIDAPIKEY);
       var request = sg.emptyRequest({
         method: 'POST',
         path: '/v3/mail/send',
         body: mail.toJSON()
       });
       
-      sg.API(request, function(error, response) {
-        console.log(response.statusCode)
+      sg.API(request, function(error, response)
+      {/*console.log(response.statusCode)
         console.log(response.body)
-        console.log(response.headers)
-        	req.flash('successArr', 'Password Changed Successfully!');
-      			res.redirect('/campgrounds');
+        console.log(response.headers)*/
+        req.flash('successArr', 'Password Changed Successfully!');
+        res.redirect('/campgrounds');
       });   
             
     }

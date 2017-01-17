@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>YelpCamp</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="/animate.css"> 
+</head>
+<body>
+<style>
+/*------------NAVBAR SECTION-------------*/
+.navbar-inverse .navbar-brand,.navbar-inverse .navbar-nav>li>a{
+    color:white;
+}
+.opaque-navbar{
+    background-color: rgba(0,0,0,0.25);
+  /* Transparent = rgba(0,0,0,0) / Translucent = rgba(0,0,0,0.5)  */
+    border-bottom: 0px;
+    transition: background-color .5s ease 0s;
+}
+.opaque-navbar.opaque {
+    background-color: #232323;
+    transition: background-color .5s ease 0s;
+}
+/*underline link in navbar when hovered upon*/
+.nav>li>a {
+	transition: border-color .2s;
+    -moz-transition: border-color .2s;
+    -webkit-transition: border-color .2s;
+    -o-transition: border-color .2s;
+    border-bottom: solid 3px transparent;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    border-bottom-color: white;
+}
+/* navbar menu when loggedin */
+ul.dropdown-menu {	/* dropdown menu when logged in*/
+    background-color: #aaa;
+}
+/*highlighted color of dropdown menu */
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color: #a0a0a0!important;
+    border-color: transparent;
+}
+.icon-size{
+    font-size: 83px;
+}
+.navbar-login{
+    min-width: 250px;
+    padding: 10px 10px 0 10px;
+    color:#333;
+    background:#f8f8f8;
+}
+.dropdown-menu>li>a {
+    display: block;
+    clear: both;
+    font-weight: 400;
+    padding: 10px!important;
+    line-height: 1.42857143;
+    color: #333!important;
+    background:#f8f8f8!important;
+    white-space: nowrap;
+}
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    text-decoration: none;
+    background: #333!important;
+    color: #f8f8f8!important;
+}
+.navbar-collapse.in {	/*preventing unwanted scrollbars in collapsed dropdown menu*/
+	overflow-y: visible;
+}
+/*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
+.btn-primary {
+    color: white;
+    background-color: #777;
+    border-color: gray; /*set the color you want here*/
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active ,.btn-primary:active:focus , .open>.dropdown-toggle.btn-primary {
+    color: black;
+    background-color: #aaa;
+    border-color: #adadad;
+}
+/*--------END OF NAVBAR------------*/
+#landing-header {
+  text-align: center;
+  text-shadow: 0 4px 3px rgba(0, 0, 0, 0.4), 0 8px 13px rgba(0, 0, 0, 0.1), 0 18px 23px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  font-size: 5em;
+  color: white;
+}
+#landing-button-div {
+  text-align:center;
+  margin:auto;
+  margin-top: 8%;
+  width:30%;
+}
+#tagline{
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.8em;
+  color:white;
+}
+/*material-icons configure:*/
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+body{
+    background:#f8f8f8;
+}
+/*-------------------carousel---------------------------------*/
+.main-container {
+  padding: 10px 15px;
+}
+.thirdslide {
+	background:url('https://source.unsplash.com/ilkTnuMunP8/1366x768.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.secondslide{
+  background:url('https://source.unsplash.com/Dac1Yw8u3No/1366x768.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.firstslide {
+  /*background: url('https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_960_720.jpg') no-repeat center center fixed; */
+  background: url('/landing.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.carousel-indicators {
+	bottom: 0;
+}
+.carousel-control.right,
+.carousel-control.left {
+	background-image: none;
+}
+.carousel .item {
+	min-height:400px;
+	min-width:700px;
+	height: 400px;
+	width:100%; 
+}
+.carousel-caption a{
+  text-decoration:none;
+  color:black;
+  height:40px;
+  font-size:18px;
+  background:#e0e0e0;
+}
+.carousel-caption a:hover{
+  text-decoration:none;
+  color:#f8f8f8;
+  background:rgba(0,0,0,0.5);
+}
+.carousel-caption h3 {
+	padding: .5em;
+}
+.carousel-caption h3:hover{
+  text-decoration:none;
+}
+.carousel-control:hover{/*arrows for next image*/
+  background:rgba(0,0,0,0.2);
+} 
+.carousel .icon-container {
+	display: inline-block;
+	font-size: 40px;
+	line-height: 25px;
+	padding: 1em;
+	text-align: center;
+	border-radius: 50%;
+	background:rgba(0,0,0,0.5);
+}
+.carousel-caption button {
+	border-color: #00bfff;
+	margin-top: 1em; 
+}
+/* Animation delays */
+.carousel-caption h3:first-child {
+	animation-delay: 0.5s;
+}
+.carousel-caption h3:nth-child(2) {
+	animation-delay: 1s;
+}
+.carousel-caption button {
+	animation-delay: 1.5s;
+}
+h1 {
+  text-align: center;  
+  margin-bottom: 30px;
+  font-size: 30px;
+  font-weight: bold;
+}
+/*------------------------------------------------------------*/
+@media (max-width: 768px) {
+  body{
+    background:#f8f8f8;
+  }
+  .collapsing, .in {background-color: #333;}
+  .opaque-navbar {
+    background-color: black;
+    transition: background-color .5s ease 0s;
+}
+}
+</style>
+
+<nav class="navbar navbar-inverse  opaque-navbar navbar-fixed-top">
+	<div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarMain" aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>	
+		  <a class="navbar-brand" href="/">YelpCamp</a>
+		</div>
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="navbarMain">
+			<ul class="nav navbar-nav">
+				<li><a href="/campgrounds"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+				<li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			    <% if(!currentuser){ %>
+                    <li><a href="/login"><span class="glyphicon glyphicon-log-in"  aria-hidden="true" ></span> Login</a></li>
+                    <li><a href="/register"><i class="material-icons md-18">person_add</i> Sign Up</a></li>
+                <% } else { %>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=currentuser.username%><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li>
+							<div class="navbar-login">
+								<div class="row" style="overflow:hidden;">
+									<div class="col-lg-4"><p class="text-center"><span class="glyphicon glyphicon-user icon-size"></span></p></div>
+									<div class="col-lg-8">
+										<p class="text-left"><strong><%=currentuser.username%></strong></p>
+										<p class="text-left small"><%=currentuser.email%></p>
+										<p class="text-left"><a href="/profile/<%=currentuser.username%>" class="btn btn-primary btn-block btn-sm">Profile</a></p>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li><a href="/campgrounds">Account Settings<span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+						<li><a href="/change-password">Change Password<span class="glyphicon glyphicon-lock pull-right"></span></a></li>
+						<li><a href="/logout">Sign Out<span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+					</ul>
+				</li>
+				<% }%>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</div><!-- /.container-fluid -->
+</nav>
+
+ <div id="namma-carousel" class="carousel slide">
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" role="listbox">
+        <!-- First slide -->        
+        <div class="item active firstslide">
+          <div class="carousel-caption">
+            <h1 id="landing-header"><span class="glyphicon glyphicon-tent"></span> YelpCamp</h1>
+     		    <h3 id="tagline">Start planning your next trip today</h3>
+            <hr>
+        	  <a href="/campgrounds" data-animation="animated zoomInUp" class="btn"><i class="fa fa-tree"></i>View all Camping grounds</a>
+          </div> 
+        </div> <!-- /.item -->
+
+        <!-- Second slide -->
+        <div class="item secondslide">
+           <div class="carousel-caption">
+             <h3 class="icon-container" data-animation="animated bounceInUp">
+              <span class="fa fa-lightbulb-o"></span>
+            </h3>
+             <a href="/tips" data-animation="animated zoomInUp" class="btn btn-block">View Camping Tips </a>
+          </div>
+        </div><!-- /.item -->
+
+        <!-- Third slide -->
+        <div class="item thirdslide">
+          <div class="carousel-caption">
+            <h3 class="icon-container" data-animation="animated bounceInDown">
+              <span class="glyphicon glyphicon-heart"></span>
+            </h3>
+            <a href="/tips" data-animation="animated zoomInUp" class="btn btn-block">View Our Favorite Campgrounds</a>
+          </div>
+        </div><!-- /.item -->
+
+      </div><!-- /.carousel-inner -->
+ <!-- Indicators -->
+ <ol class="carousel-indicators">
+ <li data-target="#namma-carousel" data-slide-to="0" class="active"></li>
+ <li data-target="#namma-carousel" data-slide-to="1"></li>
+ <li data-target="#namma-carousel" data-slide-to="2"></li>
+ </ol>
+      
+      <!-- Controls -->
+      <a class="left carousel-control" href="#namma-carousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#namma-carousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
+<!--</section> -->
+ 
+<div class="container">
+  <div class="row" style="height:800px;">
+<div class="cold-md-12">
+    <h2>Landing page</h2>
+    <p>
+        With YelpCamp, you can create campgrounds, comment on others' campgrounds, edit and delete your campgrounds<br>
+        This website was built using Node.js
+    </p>
+  </div>
+  </div>
+  </div>
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+(function( $ ) {
+	function doAnimations( elems ) {
+		//store the animation event in a variable
+		var animEndEv = 'webkitAnimationEnd animationend';	
+		elems.each(function () {
+			var $this = $(this),
+				$animationType = $this.data('animation');
+			$this.addClass($animationType).one(animEndEv, function () {
+				$this.removeClass($animationType);
+			});
+		});
+	}
+	
+	//Variables on page load 
+	var $myCarousel = $('#namma-carousel'),
+		$firstAnimatingElems = $myCarousel.find('.item:first').find("[data-animation ^= 'animated']");
+	//Initialize carousel 
+	$myCarousel.carousel();
+	//Animate captions in first slide on page load 
+	doAnimations($firstAnimatingElems);
+	//Pause carousel  
+	$myCarousel.carousel('pause');
+	//Other slides to be animated on carousel slide event 
+	$myCarousel.on('slide.bs.carousel', function (e) {
+		var $animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
+		doAnimations($animatingElems);
+	});  
+})(jQuery);
+  /***********************************************************
+  * OPAQUE NAVBAR SCRIPT
+  ***********************************************************/
+  // Toggle tranparent navbar when the user scrolls the page
+  $(window).scroll(function() {
+    if($(this).scrollTop() > 315)  /*height in pixels when the navbar becomes non opaque*/ 
+    {
+        $('.opaque-navbar').addClass('opaque');
+    } else {
+     $('.opaque-navbar').removeClass('opaque');
+    }
+});
+</script> 
+</body>
+</html>
