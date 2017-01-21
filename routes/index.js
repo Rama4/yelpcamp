@@ -8,6 +8,30 @@ var bcrypt = require('bcrypt-nodejs'),
     async = require('async'),
     crypto = require('crypto');
 var helper = require('sendgrid').mail;
+//----------------------------------------------------------------------------------------------------------------    
+var getratings=function(req,res)
+{
+  campground.find().exec(function(err,allcamps)
+  {
+    if(err)
+    {
+      req.flash("errorArr",err.message);
+      res.redirect("/");
+    }
+    else
+    {
+      for(var i=0;i<allcamps.length;i++)
+        if(allcamps[i].rating_avg=="N/A")
+          allcamps[i].rating_avg = -1;
+        allcamps.sort(function(a, b) {
+          return parseFloat(b.rating_avg,10) - parseFloat(a.rating_avg,10);
+        });
+        var s = allcamps;
+        return s;
+    }
+  });
+} ;
+//----------------------------------------------------------------------------------------------------------------    
     
 router.get("/",function(req,res)
 {
@@ -26,7 +50,12 @@ router.get("/tips",function(req,res)
 {
   res.render("tips");
 });
-
+router.get("/favorites",function(req,res)
+{
+  var camparr = getratings(req,res);
+  console.log(camparr);
+  res.render("favorites",{camps : camparr});
+});
 router.get("/profile/:username",function(req,res)
 {
   user.findOne({ username: req.params.username }, function(err, user)
@@ -57,7 +86,6 @@ router.get("/profile/:username",function(req,res)
     }
   });
 });
-
 
 //********************************
 //  AUTH routes

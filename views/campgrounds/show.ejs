@@ -1,7 +1,140 @@
 <% include ../partials/header %>
 <div class="container">
     <div class="row">
-        <div class="col-md-3 infolist">
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img-responsive photo" src="<%=campground["image"]%>">
+                
+                <div class="caption-full">
+                    <h4><a><%=campground.name%></a></h4>
+                    <pre><%= campground.description %></pre>
+                    <p><em>Submitted By <strong><%= campground.author.username %></strong> on <%=campground.date_created%></em></p>
+                    <div class="row" id="ratingbar" style="margin-left:0; width:315px;">
+                        <!-- 
+                            * fixed width is specified for maintaining size even when resized
+                            * col-md, col-sm, col-xs are specified to make the columns responsive  
+                        -->
+                        <div class="col-md-2 col-sm-2 col-xs-2" style="width:110px;">
+                            <div class="row">
+                                <h3 style="color:black;"><strong><%=campground.rating_avg%>  <span style="color:black;">&#9733;</span></strong></h3>
+                            </div>
+                            <div class="row">
+                                <strong>(<%=campground.comments.length%> rating<%if(campground.comments.length!=1){%>s<% }%>)</strong>
+                            </div>
+                        </div>
+
+                                       <!-- Horizontal, rounded -->
+
+                        <div class="col-md-10 col-sm-10 col-xs-10 container horizontal rounded" style="width:205px;">
+    						<div class="row">
+    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">5 <span>&#9733;</span></div>
+    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
+    						  </div>
+    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
+    						</div>
+    						<div class="row">
+    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">4 <span>&#9733;</span></div>
+    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
+    						  </div>
+    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
+    						</div>
+    						<div class="row">
+    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">3 <span>&#9733;</span></div>
+    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
+    						  </div>
+    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
+    						</div>
+    						<div class="row">
+    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">2 <span>&#9733;</span></div>
+    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-orange"></div></div>
+    						  </div>
+    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
+    						</div>
+    						<div class="row">
+    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">1 <span>&#9733;</span></div>
+    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
+    							         <div class="progress-track"><div class="progress-fill color-red"></div></div>
+    						  </div>
+    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
+    						</div>
+                        </div>
+                    </div>    <!--  row end-->
+
+                       <!-- Campground Buttons: -->
+                    <%if(campground.author.id && currentuser && campground.author.id.equals(currentuser._id)){%>
+                    <a class = "btn btn-warning" href="/campgrounds/<%= campground._id %>/edit" >Edit Campground</a>
+                    <form id="deleteform" action = "/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                      <button class = "btn btn-danger"  >Delete Campground</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+            <div class="well">
+                <div class="text-right">
+                    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+                </div>
+                <hr>
+                <!-- Comments: -->
+                <% for(var i=0;i<campground.comments.length;i++){ %>
+                  <%  var com = campground.comments[i]; %>
+                    <div class="row">
+                      <div class="row">
+                        <div class="col-md-9">
+                            <h5><strong><%= com.rating_value %></strong>  <span style="color:black;">&#9733;</span>  <strong><%=com.title%></strong></h5>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="pull-right"><strong><span class="glyphicon glyphicon-user"></span> <%=com.author.username%></strong></div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-10">
+                            <pre><%= com.text %></pre>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="pull-right"><%=com.date%></span>
+                        </div>
+                      </div>
+                      <!-- comment Buttons: -->
+                      	<div class="voting-buttons row" style="margin:0 auto; width:290px;">
+                  	        <div class="col-md-3 col-sm-3 col-xs-3" style="width:100px; padding:0; text-align:right;">
+                  	            <span class="number-of-upvotes"></span>
+                  	        </div>
+                            <div class="col-md-6  col-sm-3 col-xs-3 text-center" style="width:90px; padding:0 10px; ">
+                            <form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/upvote" method="POST">
+                                <button class="btn upvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
+                            </form>
+                            <form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/downvote" method="POST">
+                               <button class="btn downvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
+                            </form>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3" style="width:100px;  padding:0;">
+                                <span class="number-of-downvotes"></span>
+                            </div>
+                        </div>
+						
+                      <%if(currentuser && com.author.id.equals(currentuser._id)){%>
+                        <div class="row" style="margin-right:0;">
+							<div class="pull-right">
+								<form id="deleteform" action = "/campgrounds/<%=campground._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
+								<button class = "btn btn-xs btn-danger"  >Delete</button>
+								</form> 
+							</div>
+							<div class="pull-right">
+								<a class = "btn btn-xs btn-warning" href="/campgrounds/<%=campground._id%>/comments/<%= com._id%>/edit" >Edit</a>
+							</div>
+						</div>
+                        <% } %>
+                    </div>
+                    <hr class="style10">
+                <% } %>
+            </div>
+        </div>
+       
+	   <div class="col-md-3 infolist">
             <p class="lead"><%=campground.name%></p>
             <% var labels = [ "Location:","Price ($/Night):","Amenities:","Booking Window:"] ; %>
             <div class="list-group">
@@ -28,177 +161,131 @@
                 <% }%>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="thumbnail">
-                <img class="img-responsive photo" src="<%=campground["image"]%>">
-                
-                
-                <div class="caption-full">
-                    <h4><a><%=campground.name%></a></h4>
-                    <pre><%= campground.description %></pre>
-                    <p><em>Submitted By <strong><%= campground.author.username %></strong></em></p>
-                    <div class="row" style="margin-left:0;">
-                        <div class="col-md-2">
-                            <div class="row">
-                                <h3 style="color:black;"><strong><%=campground.rating_avg%>  <span style="color:black;">&#9733;</span></strong></h3>
-                            </div>
-                            <div class="row">
-                                <strong>(<%=campground.comments.length%> ratings)</strong>
-                            </div>
-                        </div>
-
-                                       <!-- Horizontal, rounded -->
-
-                        <div class="col-md-10 container horizontal rounded">
-    						<div class="row">
-    						  <div class="col-md-2 bar-item">5 <span>&#9733;</span></div>
-    						  <div class="col-md-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-    						  </div>
-    						  <div class="col-md-2 ff"></div>
-    						</div>
-    						
-    						<div class="row">
-    						  <div class="col-md-2 bar-item">4 <span>&#9733;</span></div>
-    						  <div class="col-md-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-    						  </div>
-    						  <div class="col-md-2 ff"></div>
-    						</div>
-    
-    						<div class="row">
-    						  <div class="col-md-2 bar-item">3 <span>&#9733;</span></div>
-    						  <div class="col-md-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-    						  </div>
-    						  <div class="col-md-2 ff"></div>
-    						</div>
-    						
-    						<div class="row">
-    						  <div class="col-md-2 bar-item">2 <span>&#9733;</span></div>
-    						  <div class="col-md-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-orange"></div></div>
-    						  </div>
-    						  <div class="col-md-2 ff"></div>
-    						</div>
-    						
-    						<div class="row">
-    						  <div class="col-md-2 bar-item">1 <span>&#9733;</span></div>
-    						  <div class="col-md-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-red"></div></div>
-    						  </div>
-    						  <div class="col-md-2 ff"></div>
-    						</div>
-    						
-                        </div>
-                    </div>    <!--  row end-->
-
-                    <!-- save rating values in a new array BEFORE passing them to script tag -->
-                    <!-- this is done because of the following error occurs otherwise :
-                         Uncaught SyntaxError: Unexpected token in JSON at position 290 at JSON.parse (<anonymous>) -->
-                        <%var ratings = []; %>
-                        <%for(var i=0;i<campground.comments.length;i++){%>
-                            <% ratings.push(campground.comments[i].rating_value); %>
-                        <% } %>
-
-                       <!-- script for filling horizontal bars -->
-                      <script type="text/javascript">
-                        // function for passing ejs variable to javascript
-                        function htmlDecode(input)
-                        {    // for passing EJS variables to javascript
-                          var e = document.createElement('div');
-                          e.innerHTML = input;
-                          return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-                        }
-                        // ratings bar calculation
-                        // accessing ejs variable in javascript (here, array of comments)
-                        var comms = JSON.parse(htmlDecode("<%= JSON.stringify(ratings)%>"));
-                        var arr=[0,0,0,0,0,0],fr=[0,0,0,0,0,0];
-                        var maxVal=0,ind=0;
-                        for(var i=0;i<comms.length;i++)
-                        {
-                            ind=Math.round(parseFloat( comms[i] , 10 ));
-                            fr[ind]++;
-                        }
-                        for(var i=1;i<=5;i++)
-                        {
-                            maxVal=Math.max(fr[i],maxVal);
-                        }
-                        if(maxVal==0)
-                            maxVal = 1;
-                        for(var i=1;i<=5;i++)
-                        {
-                            arr[i] = Math.round((fr[i]*100)/maxVal);
-                            arr[i] = arr[i].toString() + "%";
-                        }
-
-                        // set fill % in ratings bar using jQuery
-                        var c=5;
-                        $('.horizontal .progress-fill').each(function(){
-                          $(this).css('width',arr[c]);
-                          c--;
-                        });
-                      // display frequency of ratings using jQuery
-                        c=5;
-                        $('.horizontal .ff').each(function(){
-                          $(this).html(fr[c].toString());
-                          c--;
-                        });
-                    </script>
-                     <!-- comment Buttons: -->
-                    <%if(currentuser && campground.author.id.equals(currentuser._id)){%>
-                    <a class = "btn btn-warning" href="/campgrounds/<%= campground._id %>/edit" >Edit Campground</a>
-                    <form id="deleteform" action = "/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-                      <button class = "btn btn-danger"  >Delete Campground</button>
-                    </form>
-                    <% } %>
-                </div>
-            </div>
-            <div class="well">
-                <div class="text-right">
-                    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
-                </div>
-                <hr>
-                <!-- Comments: -->
-                <% for(var i=0;i<campground.comments.length;i++){ %>
-                  <%  var com = campground.comments[i]; %>
-                    <div class="row">
-                      <div class="row">
-                        <div class="col-md-9">
-                            <h5><strong><%= com.rating_value %></strong>  <span style="color:black;">&#9733;</span>  <strong><%=com.title%></strong></h5>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="pull-right"><strong><span class="glyphicon glyphicon-user"></span> <%= com.author.username %></strong></div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-10">
-                            <pre><%= com.text %></pre>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="pull-right"><%=com.date%></span>
-                        </div>
-                      </div>
-                      <!-- comment Buttons: -->
-                      <%if(currentuser && com.author.id.equals(currentuser._id)){%>
-                        <div class="row">
-							<div class="pull-right but">
-								<form id="deleteform" action = "/campgrounds/<%=campground._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
-								<button class = "btn btn-xs btn-danger"  >Delete</button>
-								</form>
-							</div>
-							<div class="pull-right but">
-								<a class = "btn btn-xs btn-warning" href="/campgrounds/<%=campground._id%>/comments/<%= com._id%>/edit" >Edit</a>
-							</div>
-						</div>
-
-                        <%}%>
-                    </div>
-                    <hr class="style10">
-                <% } %>
-            </div>
-        </div>
     </div>
 </div>
 
+
+
+<!-- save rating values in a new array BEFORE passing them to script tag (at bottom of document)-->
+<!-- this is done because of the following error occurs otherwise :
+	 Uncaught SyntaxError: Unexpected token in JSON at position 290 at JSON.parse (<anonymous>) -->
+	<%var ratings = []; %>
+	<%var loggedInUser = currentuser ? currentuser : "none";%>
+	<%for(var i=0;i<campground.comments.length;i++){%>
+		<% ratings.push(campground.comments[i].rating_value); %>
+	<% } %>
+
+<!-- script for filling horizontal bars -->
+<script type="text/javascript">
+	// function for passing ejs variable to javascript
+	function htmlDecode(input)
+	{    // for passing EJS variables to javascript
+	  var e = document.createElement('div');
+	  e.innerHTML = input;
+	  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+	}
+	// ratings bar calculation
+	// accessing ejs variable in javascript (ratings)
+	var comms = JSON.parse(htmlDecode("<%= JSON.stringify(ratings)%>"));
+	var arr=[0,0,0,0,0,0],fr=[0,0,0,0,0,0];
+	var maxVal=0,ind=0;
+	for(var i=0;i<comms.length;i++)
+	{
+		ind=Math.round(parseFloat( comms[i] , 10 ));
+		fr[ind]++;
+	}
+	for(var i=1;i<=5;i++)
+	{
+		maxVal=Math.max(fr[i],maxVal);
+	}
+	if(maxVal==0)
+		maxVal = 1;
+	for(var i=1;i<=5;i++)
+	{
+		arr[i] = Math.round((fr[i]*100)/maxVal);
+		arr[i] = arr[i].toString() + "%";
+	}
+
+	// set fill % in ratings bar using jQuery
+	var c=5;
+	$('.horizontal .progress-fill').each(function(){
+	  $(this).css('width',arr[c]);
+	  c--;
+	});
+  // display frequency of ratings using jQuery
+	c=5;
+	$('.horizontal .ff').each(function(){
+	  $(this).html(fr[c].toString());
+	  c--;
+	});
+	
+	// accessing ejs variable in javascript (campground,its comments and currentuser)
+	// currentuser -> the one who is logged in
+	var campgroundId = JSON.parse(htmlDecode("<%= JSON.stringify(campground._id)%>"));
+	var comments = JSON.parse(htmlDecode("<%= JSON.stringify(campground.comments)%>"));
+	var current_user = JSON.parse(htmlDecode("<%= JSON.stringify(loggedInUser)%>"));
+	var upvotesArr=[] , downvotesArr=[];
+	for(var i=0;i<comments.length;i++)
+	{
+		upvotesArr.push(comments[i].upvotes.length);
+		downvotesArr.push(comments[i].downvotes.length);
+	}
+	var isUpvoted = [],isDownvoted = [];
+    if(current_user!="none")
+    {
+    	var i,j,found;
+    	for( i=0;i<comments.length;i++)
+    	{
+    		isUpvoted[i] = 0;
+    		isDownvoted[i] = 0;
+    		for( j=0;j<comments[i].upvotes.length;j++)
+    			if(comments[i].upvotes[j] == current_user._id)
+    			{
+    				isUpvoted[i] = 1;
+    				break;
+    			}
+    		for( j=0;j<comments[i].downvotes.length;j++)
+    			if(comments[i].downvotes[j] == current_user._id)
+    			{
+    				isDownvoted[i] = 1;
+    				break;
+    			}
+    	}
+    }
+	
+	// display #upvotes and #downvotes for each comment
+	c=0;
+	$('.number-of-upvotes').each(function(){
+	  $(this).html(upvotesArr[c].toString());
+	  c++
+	});
+	c=0;
+	$('.number-of-downvotes').each(function(){
+	  $(this).html(downvotesArr[c].toString());
+	  c++
+	});
+	c=0;
+    $('.voting-buttons div form .upvote').each(function(){
+    	if(isUpvoted[c]==1)
+    	{   
+    		$(this).toggleClass("upvote");//remove upvote class
+    		$(this).toggleClass("upvoted");// add upvoted class
+    		// change the action of the form tag of that specific comment
+    		$(this).parent().attr('action','/campgrounds/'+campgroundId+'/comments/'+comments[c]._id+'/undoupvote');
+    	}
+    	c++;
+    });
+    c=0;
+    $('.voting-buttons div form .downvote').each(function(){
+    	if(isDownvoted[c]==1)
+    	{   
+    		$(this).toggleClass("downvote");//remove downvote class
+    		$(this).toggleClass("downvoted");// add downvoted class
+    		// change the action of the form tag of that specific comment
+    		$(this).parent().attr('action','/campgrounds/'+campgroundId+'/comments/'+comments[c]._id+'/undodownvote');
+    
+    	}
+    	c++;
+    });
+</script>
 <% include ../partials/footer %>

@@ -4,11 +4,16 @@ var campground = require("../modules/campground");
 var midw = require("../middleware/index.js"); //index.js is the default file whenever we 'require' something
 // so its enough if we just require the folder containing index.js file
 // i.e var midw = require("../middleware");
-
+//--------------------------------------------------------------------
+var getDate = function(){
+  var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  date = new Date,  day = date.getDate(), month = monthNames[ date.getMonth() ], year = date.getFullYear();
+  return day+"-"+month+"-"+year;
+};
+//--------------------------------------------------------------------
 // index  -> show all campgrounds
 router.get("/",function(req,res)
 {
- 
     campground.find({},function(err,allcamps)
     {
         if(err)
@@ -17,8 +22,6 @@ router.get("/",function(req,res)
             res.render("campgrounds/index",{camps:allcamps});
     });
 });
-
-
 
 router.get("/new", midw.isLoggedIn , function(req,res)
 {
@@ -46,6 +49,7 @@ router.post("/", midw.isLoggedIn ,function(req,res)
     var url=req.body.link;
     var desc=req.body.description;
     var rating= "N/A";
+    var date = getDate();
     var information = req.body.info;
     var author  = {
       id: req.user._id,
@@ -56,9 +60,9 @@ router.post("/", midw.isLoggedIn ,function(req,res)
           image : url ,
           description : desc,
           author : author,
+          date_created : date,
           info : information,
           rating_avg : rating
-          
       }
     campground.create(newcampground ,function(err,campground)
     {

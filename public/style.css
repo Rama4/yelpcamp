@@ -132,6 +132,53 @@ background: linear-gradient(to left, #283048 , #859398);
 
 }
 
+/*--------comment upvote and downvote in show page------*/
+.voting-buttons form img{
+    height:18px;
+    width:18px;
+    display:block;
+}
+.voting-buttons form{
+    display:inline;
+}
+.number-of-upvotes{
+    color:green;
+}
+.number-of-downvotes{
+    color:#CD5C5C;
+}
+.upvote{
+    background-color:#e0e0e0;
+}
+.upvote:hover{
+    background-color:#5cb85c;
+}
+.downvote{
+    background-color:#e0e0e0;
+    /*cross-browser support*/
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);  
+    -o-transform: rotate(180deg); 
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);           
+}
+.downvote:hover{
+    background-color:#d9534f;
+}
+.upvoted{
+ background-color: #5cb85c;   
+}
+.downvoted{
+    background-color:#d9534f;
+    /*cross-browser support*/
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);  
+    -o-transform: rotate(180deg); 
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+/*----------------------------------------------*/
 pre{
   font-family:arial;
   white-space: pre-wrap;
@@ -145,8 +192,11 @@ pre{
 .pull-right{
 	margin-right:15px;
 }
-.but{
-	width:47px;
+/*.but{*/
+/*	width:47px;*/
+/*}*/
+.rating{
+  color:#ebebeb;
 }
 
 /*for countering text overflow in comments text and campground description*/
@@ -171,14 +221,24 @@ pre{
 .listnana{
   padding:10px 2px 10px 20px;
 }
-@media (max-width: 768px) { /* mobile view */
-  .infolist {
+@media (max-width:767px){
+    .infolist{
+        position:relative;
+        z-index:0;
+    }
+}
+
+@media (min-width: 768px) {
+    /* For mobile phones: */
+.infolist {  /*make infolist responsive in show page*/
     position: relative;
     z-index:0;
   }
-}
-.rating{
-  color:#ebebeb;
+
+.container{
+     /*to prevent campgrounds from overflowing in profile page */
+    width:auto;  
+  }
 }
 /*---------------------------------------------------------------------------------------------------*/
 /*          rating bars         */
@@ -212,7 +272,7 @@ pre{
 .color-orange {background: rgb(255, 159, 0);}
 .color-red {background: rgb(255, 97, 97);}
 .horizontal .progress-track {
-  position: relative;
+  position: relative;  
   height: 7px;
   background: rgb(240, 240, 240); 
   top:6px;

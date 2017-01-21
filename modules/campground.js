@@ -6,6 +6,7 @@ var campschema = new mongoose.Schema(
     image : String,
     description : String,
     rating_avg : String,
+    date_created : String,
     info : [String],
     author : {
         id : {
