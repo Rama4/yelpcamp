@@ -48,7 +48,7 @@ ul.dropdown-menu {	/* dropdown menu when logged in*/
 .icon-size{
     font-size: 83px;
 }
-.dropdown-menu>li>a {
+.dropdown-menu>li>a{
     display: block;
     clear: both;
     font-weight: 400;
@@ -58,11 +58,10 @@ ul.dropdown-menu {	/* dropdown menu when logged in*/
     background:white!important;
     white-space: nowrap;
 }
-.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover{
     text-decoration: none;
     color: white!important;
     background: #283048!important; 
-
 }
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 .btn-primary {
@@ -177,6 +176,24 @@ background: linear-gradient(to left, #283048 , #859398);
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
 }
+.list-of-upvotes , .list-of-downvotes{
+    visibility: hidden;
+    /*width: 150px;*/
+    /*background-color: #859398;*/
+    text-decoration: none;
+    background-color:#9d9d9d;
+    color: #f8f8f8;
+    text-align: center;
+    border-radius: 6px;
+    padding:  0;
+    font-size:1.3rem;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 10;
+    bottom:21px;
+    /*right: 20px;*/
+}
+
 
 /*----------------------------------------------*/
 pre{
@@ -192,9 +209,6 @@ pre{
 .pull-right{
 	margin-right:15px;
 }
-/*.but{*/
-/*	width:47px;*/
-/*}*/
 .rating{
   color:#ebebeb;
 }

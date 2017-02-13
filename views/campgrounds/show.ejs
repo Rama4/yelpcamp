@@ -3,13 +3,13 @@
     <div class="row">
         <div class="col-md-9">
             <div class="thumbnail">
-                <img class="img-responsive photo" src="<%=campground["image"]%>">
-                
+                <img class="img-responsive photo" src="<%=campground["image"]%>">          
                 <div class="caption-full">
                     <h4><a><%=campground.name%></a></h4>
                     <pre><%= campground.description %></pre>
                     <p><em>Submitted By <strong><%= campground.author.username %></strong> on <%=campground.date_created%></em></p>
-                    <div class="row" id="ratingbar" style="margin-left:0; width:315px;">
+                    <!-- ratings distribution-->
+					<div class="row" id="ratingbar" style="margin-left:0; width:315px;">
                         <!-- 
                             * fixed width is specified for maintaining size even when resized
                             * col-md, col-sm, col-xs are specified to make the columns responsive  
@@ -22,9 +22,7 @@
                                 <strong>(<%=campground.comments.length%> rating<%if(campground.comments.length!=1){%>s<% }%>)</strong>
                             </div>
                         </div>
-
-                                       <!-- Horizontal, rounded -->
-
+						<!-- ratings bars-->
                         <div class="col-md-10 col-sm-10 col-xs-10 container horizontal rounded" style="width:205px;">
     						<div class="row">
     						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">5 <span>&#9733;</span></div>
@@ -62,62 +60,83 @@
     						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
     						</div>
                         </div>
-                    </div>    <!--  row end-->
-
-                       <!-- Campground Buttons: -->
+                    </div>    <!--  end ratings distribution-->
+                    <!-- Campground Buttons: -->
                     <%if(campground.author.id && currentuser && campground.author.id.equals(currentuser._id)){%>
                     <a class = "btn btn-warning" href="/campgrounds/<%= campground._id %>/edit" >Edit Campground</a>
                     <form id="deleteform" action = "/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-                      <button class = "btn btn-danger"  >Delete Campground</button>
+						<button class = "btn btn-danger"  >Delete Campground</button>
                     </form>
                     <% } %>
                 </div>
             </div>
-            <div class="well">
+           <div class="well"><!--comments section-->
                 <div class="text-right">
-                    <a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+					<a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
                 </div>
                 <hr>
-                <!-- Comments: -->
+                <!-- Comments list -->
                 <% for(var i=0;i<campground.comments.length;i++){ %>
-                  <%  var com = campground.comments[i]; %>
+					<%  var com = campground.comments[i]; %>
                     <div class="row">
-                      <div class="row">
-                        <div class="col-md-9">
-                            <h5><strong><%= com.rating_value %></strong>  <span style="color:black;">&#9733;</span>  <strong><%=com.title%></strong></h5>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="pull-right"><strong><span class="glyphicon glyphicon-user"></span> <%=com.author.username%></strong></div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-10">
-                            <pre><%= com.text %></pre>
-                        </div>
-                        <div class="col-md-2">
-                            <span class="pull-right"><%=com.date%></span>
-                        </div>
-                      </div>
-                      <!-- comment Buttons: -->
-                      	<div class="voting-buttons row" style="margin:0 auto; width:290px;">
-                  	        <div class="col-md-3 col-sm-3 col-xs-3" style="width:100px; padding:0; text-align:right;">
-                  	            <span class="number-of-upvotes"></span>
-                  	        </div>
-                            <div class="col-md-6  col-sm-3 col-xs-3 text-center" style="width:90px; padding:0 10px; ">
-                            <form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/upvote" method="POST">
-                                <button class="btn upvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
-                            </form>
-                            <form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/downvote" method="POST">
-                               <button class="btn downvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
-                            </form>
-                            </div>
-                            <div class="col-md-3 col-sm-3 col-xs-3" style="width:100px;  padding:0;">
-                                <span class="number-of-downvotes"></span>
-                            </div>
-                        </div>
-						
-                      <%if(currentuser && com.author.id.equals(currentuser._id)){%>
-                        <div class="row" style="margin-right:0;">
+						<div class="row">
+							<div class="col-md-9">
+								<h5><strong><%= com.rating_value %></strong>  <span style="color:black;">&#9733;</span>  <strong><%=com.title%></strong></h5>
+							</div>
+							<div class="col-md-3">
+								<div class="pull-right"><strong><span class="glyphicon glyphicon-user"></span> <%=com.author.username%></strong></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-10">
+								<pre><%= com.text %></pre>
+							</div>
+							<div class="col-md-2">
+								<span class="pull-right"><%=com.date%></span>
+							</div>
+						</div>
+						<!--voting info--->
+						<% console.log(com); %>
+						<div class="voting-buttons row" style="margin:0 auto; width:290px;">
+							<!--upvotes info-->
+							<div class="par-num-up col-md-3 col-sm-3 col-xs-3" style="width:100px; padding:0; text-align:right;">
+								<!--number of upvotes-->
+								<span class="number-of-upvotes"></span>
+								<!--list of people who upvoted(pops up on click)-->
+								<span class="list-of-upvotes">
+									<ul style="list-style:none; margin:5px; padding:0; ">
+										<%for(var kk=0;kk<com.upvotes.length;kk++){%>
+											<li><%=com.upvotes[kk].username%></li>
+										<% }%>
+									</ul>
+								</span>
+							</div>
+							<!--upvote and downvote buttons-->
+							<div class="col-md-6  col-sm-3 col-xs-3 text-center" style="width:90px; padding:0 10px; ">
+								<form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/upvote" method="POST">
+									<button class="btn upvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
+								</form>
+								<form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/downvote" method="POST">
+								   <button class="btn downvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
+								</form>
+							</div>
+							<!--downvotes info-->
+							<div class="par-num-down col-md-3 col-sm-3 col-xs-3" style="width:100px;  padding:0; text-align:left;">
+								<!--number of downvotes-->
+								<span class="number-of-downvotes"></span>
+								<!--list of people who downvoted(pops up on click)-->
+								<span class="list-of-downvotes">
+									<ul style="list-style:none; margin:5px; padding:0; ">
+										<%for(var kk=0;kk<com.downvotes.length;kk++){%>
+											<li><%=com.downvotes[kk].username%></li>
+										<% }%>
+									</ul>
+								</span>
+							</div>                           
+						</div><!--end voting info-->
+						<!-- edit and delete comment buttons: -->	
+						<%if(currentuser && com.author.id.equals(currentuser._id)){%>
+						<div class="row" style="margin-right:0;">
 							<div class="pull-right">
 								<form id="deleteform" action = "/campgrounds/<%=campground._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
 								<button class = "btn btn-xs btn-danger"  >Delete</button>
@@ -127,13 +146,12 @@
 								<a class = "btn btn-xs btn-warning" href="/campgrounds/<%=campground._id%>/comments/<%= com._id%>/edit" >Edit</a>
 							</div>
 						</div>
-                        <% } %>
-                    </div>
+						<% } %>
+					</div>
                     <hr class="style10">
-                <% } %>
+                <% } %><!--end of single comment-->
             </div>
-        </div>
-       
+        </div>       
 	   <div class="col-md-3 infolist">
             <p class="lead"><%=campground.name%></p>
             <% var labels = [ "Location:","Price ($/Night):","Amenities:","Booking Window:"] ; %>
@@ -141,8 +159,8 @@
                 <%for(var i=0;i<campground.info.length;i++){%>
                     <%if(labels[i] != "Amenities:"){%>
                     <li class="list-group-item listnana">
-                            <h4><%=labels[i]%></h4>
-                            <p><%=campground.info[i]%></p>
+						<h4><%=labels[i]%></h4>
+						<p><%=campground.info[i]%></p>
                     </li>
                     <% }%>
                     <% if(labels[i] == "Amenities:"){ %>
@@ -150,11 +168,9 @@
                         <li class="list-group-item listnana">
                             <h4><%=labels[i]%></h4>
                             <ul>
-                            <%for(var j=0;j<amen.length;j++){%>
-                                <li>
-                                    <%=amen[j]%>
-                                </li>
-                            <% } %>
+								<%for(var j=0;j<amen.length;j++){%>
+									<li><%=amen[j]%></li>
+								<% } %>
                             </ul>
                         </li>
                     <% } %>
@@ -163,19 +179,20 @@
         </div>
     </div>
 </div>
-
-
-
-<!-- save rating values in a new array BEFORE passing them to script tag (at bottom of document)-->
+<!-- save rating values in a new array('ratings') BEFORE passing them to script tag (at bottom of document)-->
 <!-- this is done because of the following error occurs otherwise :
 	 Uncaught SyntaxError: Unexpected token in JSON at position 290 at JSON.parse (<anonymous>) -->
 	<%var ratings = []; %>
 	<%var loggedInUser = currentuser ? currentuser : "none";%>
+	<!-- above line is because if you check if you accesss variable 'currentuser' inside script tag by using json parse,
+		 you will get json parsing error if no one is loggedin because if user isn't logged in, then it cannot parse null value
+		the work-around is simple, just check here and use another var loggedInUser
+		only if loggedInUser != "none", do required work (highlighting their upvoted and downvoted comments)
+	-->
 	<%for(var i=0;i<campground.comments.length;i++){%>
 		<% ratings.push(campground.comments[i].rating_value); %>
 	<% } %>
-
-<!-- script for filling horizontal bars -->
+<!-- script for filling horizontal bars and for upvote and downvote action-->
 <script type="text/javascript">
 	// function for passing ejs variable to javascript
 	function htmlDecode(input)
@@ -212,13 +229,12 @@
 	  $(this).css('width',arr[c]);
 	  c--;
 	});
-  // display frequency of ratings using jQuery
+	// display frequency of ratings using jQuery
 	c=5;
 	$('.horizontal .ff').each(function(){
 	  $(this).html(fr[c].toString());
 	  c--;
-	});
-	
+	});	
 	// accessing ejs variable in javascript (campground,its comments and currentuser)
 	// currentuser -> the one who is logged in
 	var campgroundId = JSON.parse(htmlDecode("<%= JSON.stringify(campground._id)%>"));
@@ -239,20 +255,19 @@
     		isUpvoted[i] = 0;
     		isDownvoted[i] = 0;
     		for( j=0;j<comments[i].upvotes.length;j++)
-    			if(comments[i].upvotes[j] == current_user._id)
+    			if(comments[i].upvotes[j]._id == current_user._id)
     			{
     				isUpvoted[i] = 1;
     				break;
     			}
     		for( j=0;j<comments[i].downvotes.length;j++)
-    			if(comments[i].downvotes[j] == current_user._id)
+    			if(comments[i].downvotes[j]._id == current_user._id)
     			{
     				isDownvoted[i] = 1;
     				break;
     			}
     	}
-    }
-	
+    }	
 	// display #upvotes and #downvotes for each comment
 	c=0;
 	$('.number-of-upvotes').each(function(){
@@ -283,9 +298,25 @@
     		$(this).toggleClass("downvoted");// add downvoted class
     		// change the action of the form tag of that specific comment
     		$(this).parent().attr('action','/campgrounds/'+campgroundId+'/comments/'+comments[c]._id+'/undodownvote');
-    
     	}
     	c++;
     });
+    /*  
+        display list of ppl who upvoted and downvoted on hover  
+        the structure of the document is such that 
+        the list to be shown(when hovered) and the element on which the hover occurs are siblings
+        they are accessed using siblengs() or next( or previous() depending on the need
+        Note: If only one function is specified, it will be run for both the mouseenter and mouseleave events.
+    */
+    $('.number-of-upvotes').hover(
+        function(){   if($(this).html() != "0") $(this).next().css('visibility','visible');    },// mouseenter event
+        function(){    $(this).next().css('visibility','hidden');    }                           // mouseleave event
+    );
+    $('.number-of-downvotes').hover(
+        function(){   if($(this).html() != "0") $(this).next().css('visibility','visible');    },// mouseenter event
+        function(){    $(this).next().css('visibility','hidden');    }                           // mouseleave event
+    );
+    
+    
 </script>
 <% include ../partials/footer %>

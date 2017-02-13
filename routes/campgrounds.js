@@ -31,16 +31,34 @@ router.get("/new", midw.isLoggedIn , function(req,res)
 // show rout
 //*************************************************************************
 router.get("/:id",function(req,res)
-{
-    campground.findById(req.params.id).populate("comments").exec(function(err,foundcampground)
+{   //  populating comments in foundcamp and also upvotes and downvotes for each comment
+    campground.findById(req.params.id)  
+    .populate({
+        path: 'comments',
+        populate : {
+                        path : 'upvotes',
+                        model : 'user'
+                  }
+    })
+    .exec(function(err,foundcamp)
     {
         if(err)
             console.log(err);
         else
-        {
-            res.render("campgrounds/show",{campground : foundcampground});
+        {   //populate upvotes and downvotes in foundcamp
+            campground.populate(foundcamp, 
+                    {
+                        path: 'comments.downvotes',
+                        model: 'user',
+                    }, function(err, popcamp) {
+                        if (err)
+                            console.log(err);
+                        else
+                            res.render("campgrounds/show",{campground : popcamp});   
+                    });
         }
     });
+    
 });
 // add a new campground
 router.post("/", midw.isLoggedIn ,function(req,res)

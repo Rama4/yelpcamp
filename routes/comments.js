@@ -83,7 +83,7 @@ var increaseDownvotes = function(req,res)
     if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
 	else
     {
-		if(searchId(com.upvotes,req.user._id)==-1)
+		if(searchId(com.downvotes,req.user._id)==-1)
 		{ 
 			com.downvotes.push(req.user);
 			com.save();

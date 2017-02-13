@@ -56,7 +56,7 @@ router.get("/favorites",function(req,res)
   console.log(camparr);
   res.render("favorites",{camps : camparr});
 });
-router.get("/profile/:username",function(req,res)
+router.get("/profiles/:username",function(req,res)
 {
   user.findOne({ username: req.params.username }, function(err, user)
   {
