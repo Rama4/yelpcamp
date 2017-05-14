@@ -119,6 +119,18 @@ router.post("/register",function(req,res)
   });
 });
 
+router.get("/login/1",function(req,res)
+{
+    req.flash("successArr","Welcome To Yelpcamp!");
+    res.redirect("/campgrounds");
+});
+
+router.get("/login/2",function(req,res)
+{
+    req.flash("errorArr","Wrong Username/Password!");
+    res.redirect("/login");
+});
+
 router.get("/login",function(req,res)
 {
   res.render("login");
@@ -126,8 +138,8 @@ router.get("/login",function(req,res)
 
 router.post("/login" , passport.authenticate("local",
 {
-  successRedirect: "/campgrounds",
-  failureRedirect: "/login"
+  successRedirect: "/login/1",
+  failureRedirect: "/login/2"
 }) ,
 function(req,res)
 { });
