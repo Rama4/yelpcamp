@@ -1,4 +1,6 @@
 var express = require("express");
+var bp = require("body-parser");
+var cloudinary = require('cloudinary'); // for content modereation
 var router = express.Router({mergeParams : true});
 var campground = require("../modules/campground");
 var midw = require("../middleware/index.js"); //index.js is the default file whenever we 'require' something
@@ -10,6 +12,8 @@ var getDate = function(){
   date = new Date,  day = date.getDate(), month = monthNames[ date.getMonth() ], year = date.getFullYear();
   return day+"-"+month+"-"+year;
 };
+//--------------------------------------------------------------------
+
 //--------------------------------------------------------------------
 // index  -> show all campgrounds
 router.get("/",function(req,res)
@@ -91,10 +95,38 @@ router.post("/", midw.isLoggedIn ,function(req,res)
         else
             {
                 req.flash("successArr","New Campground added successfully!");
-                res.redirect("/campgrounds/"+campground._id);
-                    
+                cloudinary.uploader.upload(
+                    url,
+                    function(result)
+                    { 
+                        console.log(result);
+                        if(!result)
+                        { console.log("Error while uploading image to cloudinary!"); }
+                        else
+                        { console.log("image is uploaded!\npending moderation..."); }
+                    }, 
+                    { 
+                        moderation: "webpurify",
+                        notification_url: "/campgrounds/"+campground._id+"/moderation"
+                    }
+                );
+                res.redirect("/campgrounds/"+campground._id);                    
             }
     });
+});
+
+router.post("/:id/moderation",function(req,res)
+{
+    console.log("received moderation response!");
+    console.log(req.body);
+    if(req.body.moderation_status == 'approved')
+    {
+        console.log("image:"+req.body.public_id+" approved!");
+    }
+    else
+    {
+        console.log("image:"+req.body.public_id+" not approved!");
+    }
 });
 
 // EDIT Route
