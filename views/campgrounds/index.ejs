@@ -14,7 +14,11 @@
         <% for( var i=0; i< camps.length; i++ ) {%>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
-                    <img src="<%=camps[i].image%>" >
+                    <% if(camps[i].image_approved === true || !camps[i].image){ %>
+                        <img src="<%=camps[i].image%>" >
+                    <% } else { %>
+                        <h3 style="text-align: center">Image awaiting moderation.</h3>
+                    <% } %>
                 <div class="caption">
                      <h4> <%=camps[i].name%></h4>
                 </div>

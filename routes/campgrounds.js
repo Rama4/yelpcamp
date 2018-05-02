@@ -13,7 +13,47 @@ var getDate = function(){
   return day+"-"+month+"-"+year;
 };
 //--------------------------------------------------------------------
+var moderate = function(img_url,campid)
+{
+    cloudinary.uploader.upload(
+        img_url,
+        function(result)
+        { 
+            console.log(result);
+            if(!result)
+            { console.log("Error while uploading image to cloudinary!"); }
+            else
+            { console.log("image is uploaded!\npending moderation..."); }
+        }, 
+        { 
+            moderation: "webpurify",
+            notification_url: "/campgrounds/"+campid+"/moderation"
+        }
+    );
+}
+//--------------------------------------------------------------------
 
+var foo = function(campid, new_camp, callback)
+{
+    // find camp and compare old img url with new url
+    campground.findById(campid).exec(function(err,old_camp)
+    {
+        if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
+        else
+        {
+            // if change is detected, send it for moderation
+            if(old_camp.image != new_camp.image)
+                moderate(new_camp.image,campid);
+        }    
+    });
+    callback();
+}
+//--------------------------------------------------------------------
+cloudinary.config({ 
+    cloud_name: 'rama4', 
+    api_key: '286562932995297', 
+    api_secret: 'AM63KLxw18_GnLJgHfrD10ihzGg' 
+  });
 //--------------------------------------------------------------------
 // index  -> show all campgrounds
 router.get("/",function(req,res)
@@ -23,7 +63,9 @@ router.get("/",function(req,res)
         if(err)
             console.log(err);
         else
-            res.render("campgrounds/index",{camps:allcamps});
+        {
+            res.render("campgrounds/index", {camps : allcamps});
+        }
     });
 });
 
@@ -84,7 +126,8 @@ router.post("/", midw.isLoggedIn ,function(req,res)
           author : author,
           date_created : date,
           info : information,
-          rating_avg : rating
+          rating_avg : rating,
+          image_approved : false
       }
     campground.create(newcampground ,function(err,campground)
     {
@@ -94,38 +137,36 @@ router.post("/", midw.isLoggedIn ,function(req,res)
         }
         else
             {
-                req.flash("successArr","New Campground added successfully!");
-                cloudinary.uploader.upload(
-                    url,
-                    function(result)
-                    { 
-                        console.log(result);
-                        if(!result)
-                        { console.log("Error while uploading image to cloudinary!"); }
-                        else
-                        { console.log("image is uploaded!\npending moderation..."); }
-                    }, 
-                    { 
-                        moderation: "webpurify",
-                        notification_url: "/campgrounds/"+campground._id+"/moderation"
-                    }
-                );
-                res.redirect("/campgrounds/"+campground._id);                    
+                req.flash("successArr","New Campground added successfully! Awaiting image moderation..");
+                res.redirect("/campgrounds/"+campground._id);
+                if(url.length)
+                    moderate(url,campground._id);               
             }
     });
 });
 
+// Update image moderation status
 router.post("/:id/moderation",function(req,res)
 {
     console.log("received moderation response!");
     console.log(req.body);
     if(req.body.moderation_status == 'approved')
     {
-        console.log("image:"+req.body.public_id+" approved!");
+        console.log("image for campground:"+req.params.id+" approved!");
+        campground.findById(req.params.id).exec(function(err,camp)
+        {
+            if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
+            else
+            {
+                camp.image_approved = true;
+                camp.save();
+                console.log("image for campground:"+req.params.id+"'s status updated in DB!");
+            }    
+        });
     }
     else
     {
-        console.log("image:"+req.body.public_id+" not approved!");
+        console.log("image for campground:"+req.params.id+" not approved!");
     }
 });
 
@@ -136,21 +177,25 @@ router.get("/:id/edit",midw.checkCampgroundOwnership, function(req,res)
       res.render("campgrounds/edit", {campground: foundCampground});
   });
 });
+
 // UPDATE Route
 router.put("/:id",function(req,res)
 {    // find and update the correct campground
-    campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedcampground)
+    foo(req.params.id, req.body.campground, function()
     {
-      if(err)
-      {
-        req.flash("errorArr",err.message);
-        res.redirect("/campgrounds");
-      }
-      else
-      {  // redirect somewhere
-        req.flash("successArr","Campground Updated!");
-        res.redirect("/campgrounds/"+req.params.id);
-      }
+        campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedcampground)
+        {
+        if(err)
+        {
+            req.flash("errorArr",err.message);
+            res.redirect("/campgrounds");
+        }
+        else
+        {  // redirect somewhere
+            req.flash("successArr","Campground Updated!");
+            res.redirect("/campgrounds/"+req.params.id);
+        }
+        });
     });
 });
 
@@ -165,3 +210,4 @@ router.delete("/:id",midw.checkCampgroundOwnership,function(req,res)
 });
 
 module.exports = router;
+
