@@ -11,19 +11,19 @@
 
      <br>
     <div class="row" style="display:flex; flex-wrap:wrap;">
-        <% for( var i=0; i< camps.length; i++ ) {%>
+        <% for( camp of camps ) {%>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
-                    <% if(camps[i].image_approved === true || !camps[i].image){ %>
-                        <img src="<%=camps[i].image%>" >
+                    <%if(camp.image_approved == true || !camp.image || (camp.author.id && currentuser && camp.author.id.equals(currentuser._id)) ){ %>
+                        <img src="<%=camp.image%>" >
                     <% } else { %>
-                        <h3 style="text-align: center">Image awaiting moderation.</h3>
+                        <h4 style="text-align: center">Image awaiting moderation.</h4>
                     <% } %>
                 <div class="caption">
-                     <h4> <%=camps[i].name%></h4>
+                     <h4> <%=camp.name%></h4>
                 </div>
                 <p style="margin:auto; text-align:center;">
-                    <a href="/campgrounds/<%= camps[i]._id %>" class="btn btn-primary"><i class="fa fa-info-circle"></i> More info</a>
+                    <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary"><i class="fa fa-info-circle"></i> More info</a>
                 </p>
                 </div>
             </div>

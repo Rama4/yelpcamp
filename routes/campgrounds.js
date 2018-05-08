@@ -51,8 +51,8 @@ var foo = function(campid, new_camp, callback)
 //--------------------------------------------------------------------
 cloudinary.config({ 
     cloud_name: 'rama4', 
-    api_key: '286562932995297', 
-    api_secret: 'AM63KLxw18_GnLJgHfrD10ihzGg' 
+    api_key: process.env.cloudinary_api_key,
+    api_secret: process.env.cloudinary_api_secret
   });
 //--------------------------------------------------------------------
 // index  -> show all campgrounds
@@ -150,24 +150,26 @@ router.post("/:id/moderation",function(req,res)
 {
     console.log("received moderation response!");
     console.log(req.body);
-    if(req.body.moderation_status == 'approved')
+    campground.findById(req.params.id).exec(function(err,camp)
     {
-        console.log("image for campground:"+req.params.id+" approved!");
-        campground.findById(req.params.id).exec(function(err,camp)
+        if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
+        else
         {
-            if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
-            else
+            if(req.body.moderation_status == 'approved')
             {
+                console.log("image for campground:"+req.params.id+" approved!");
                 camp.image_approved = true;
                 camp.save();
-                console.log("image for campground:"+req.params.id+"'s status updated in DB!");
-            }    
-        });
-    }
-    else
-    {
-        console.log("image for campground:"+req.params.id+" not approved!");
-    }
+            }
+            else
+            {
+                console.log("Sorry! image for campground:"+req.params.id+" not approved!");
+                camp.image_approved = false;
+                camp.save();
+            }   
+            console.log("image for campground:"+req.params.id+"'s status updated in DB!");
+        }
+    });
 });
 
 // EDIT Route

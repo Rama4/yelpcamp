@@ -3,10 +3,10 @@
     <div class="row">
         <div class="col-md-9">
             <div class="thumbnail">
-				<%if(campground.image_approved == true || !campground.image){ %>
+				<%if(campground.image_approved == true || !campground.image || (campground.author.id && currentuser && campground.author.id.equals(currentuser._id)) ){ %>
 					<img class="img-responsive photo" src="<%=campground["image"]%>">
 				<% } else { %>
-					<h3 style="text-align: center">Image awaiting moderation.</h3>
+					<h4 style="text-align: center">Image awaiting moderation.</h4>
 				<% } %>
                 <div class="caption-full">
                     <h4><a><%=campground.name%></a></h4>
