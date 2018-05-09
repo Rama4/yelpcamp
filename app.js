@@ -38,7 +38,7 @@ var exp = require("express"),
 // environment variable for database url (safety purpose : to prevent users from deleting others' data )
 var url = process.env.DATABASEURL || 'mongodb://localhost/yelp_camp';
 mongoose.Promise = global.Promise;
-mongoose.set('debug', true);
+mongoose.set('debug', false);
 mongoose.connect(url);
 
 
