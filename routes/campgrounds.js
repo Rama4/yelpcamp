@@ -15,7 +15,7 @@ var getDate = function(){
 //--------------------------------------------------------------------
 var moderate = function(img_url,campid)
 {
-    var notification_url = "/campgrounds/"+campid+"/moderation";
+    var notification_url = "https://rama-yelpcamp.herokuapp.com/campgrounds/"+campid+"/moderation";
     console.log("notification_url= "+notification_url);
     cloudinary.uploader.upload(
         img_url,
