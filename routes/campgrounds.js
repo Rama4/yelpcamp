@@ -15,19 +15,21 @@ var getDate = function(){
 //--------------------------------------------------------------------
 var moderate = function(img_url,campid)
 {
+    var notification_url = "/campgrounds/"+campid+"/moderation";
+    console.log("notification_url= "+notification_url);
     cloudinary.uploader.upload(
         img_url,
         function(result)
         { 
             console.log(result);
-            if(!result)
+            if(result.error)
             { console.log("Error while uploading image to cloudinary!"); }
             else
             { console.log("image is uploaded!\npending moderation..."); }
         }, 
         { 
             moderation: "webpurify",
-            notification_url: "/campgrounds/"+campid+"/moderation"
+            notification_url: 
         }
     );
 }
