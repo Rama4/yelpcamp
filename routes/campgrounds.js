@@ -29,7 +29,7 @@ var moderate = function(img_url,campid)
         }, 
         { 
             moderation: "webpurify",
-            notification_url: 
+            notification_url: notification_url
         }
     );
 }
