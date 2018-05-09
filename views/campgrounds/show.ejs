@@ -99,11 +99,10 @@
 								<span class="pull-right"><%=com.date%></span>
 							</div>
 						</div>
-						<!--voting info--->
-						<% console.log(com); %>
-						<div class="voting-buttons row" style="margin:0 auto; width:290px;">
+						<!--voting info-->
+						<div class="voting-buttons row" style="margin:0 auto;">
 							<!--upvotes info-->
-							<div class="par-num-up col-md-3 col-sm-3 col-xs-3" style="width:100px; padding:0; text-align:right;">
+							<div class="col-md-5 col-sm-5 col-xs-5" style="padding:0; text-align:right;">
 								<!--number of upvotes-->
 								<span class="number-of-upvotes"></span>
 								<!--list of people who upvoted(pops up on click)-->
@@ -116,16 +115,16 @@
 								</span>
 							</div>
 							<!--upvote and downvote buttons-->
-							<div class="col-md-6  col-sm-3 col-xs-3 text-center" style="width:90px; padding:0 10px; ">
+							<div class="col-md-2  col-sm-2 col-xs-2 text-center" style="padding:0 10px; ">
 								<form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/upvote" method="POST">
-									<button class="btn upvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
+									<button class="btn upvote btn-xs"><i class="material-icons md-18">thumb_up</i></button>
 								</form>
 								<form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/downvote" method="POST">
-								   <button class="btn downvote btn-xs"><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/390383-200.png"></button>
+								   <button class="btn downvote btn-xs"><i class="material-icons md-18">thumb_down</i></button>
 								</form>
 							</div>
 							<!--downvotes info-->
-							<div class="par-num-down col-md-3 col-sm-3 col-xs-3" style="width:100px;  padding:0; text-align:left;">
+							<div class="col-md-5 col-sm-5 col-xs-5" style="padding:0; text-align:left;">
 								<!--number of downvotes-->
 								<span class="number-of-downvotes"></span>
 								<!--list of people who downvoted(pops up on click)-->

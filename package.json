@@ -20,7 +20,7 @@
     "express-session": "^1.15.6",
     "mailgun-js": "^0.8.2",
     "method-override": "^2.3.10",
-    "mongoose": "^4.13.12",
+    "mongoose": "^5.0.17",
     "morgan": "^1.9.0",
     "nodemailer": "^2.7.2",
     "passport": "^0.3.2",

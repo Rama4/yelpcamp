@@ -50,11 +50,14 @@ var increaseUpvotes = function(req,res)
     else
     {
   		if(searchId(com.upvotes,req.user._id)==-1)
-  		{
+  		{ // add user to that comment's upvotes list
   			com.upvotes.push(req.user);
-  			com.save();
+        // remove user from downvotes list, if they already downvoted the comment
+        var index = searchId(com.downvotes,req.user._id);
+        if(index!=-1)
+          com.downvotes.splice(index,1);
+        com.save();
   		}
-  		// console.log(com.upvotes);
     }    
   });
 };
@@ -65,14 +68,14 @@ var decreaseUpvotes = function(req,res)
   {
     if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
     else
-    {
-		var index = searchId(com.upvotes,req.user._id);
-		if(index!=-1)
-		{
-			com.upvotes.splice(index,1);
-			com.save();
-		} 
-	}   
+    { // remove user from that comment's upvotes list
+      var index = searchId(com.upvotes,req.user._id);
+      if(index!=-1)
+      {
+        com.upvotes.splice(index,1);
+        com.save();
+      } 
+    }   
   });
 };
 
@@ -81,14 +84,18 @@ var increaseDownvotes = function(req,res)
   Comment.findById(req.params.comment_id).exec(function(err,com)
   {
     if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
-	else
+    else
     {
-		if(searchId(com.downvotes,req.user._id)==-1)
-		{ 
-			com.downvotes.push(req.user);
-			com.save();
-		}	 
-	}
+      if(searchId(com.downvotes,req.user._id)==-1)
+  		{ // add user to that comment's downvotes list
+  			com.downvotes.push(req.user);
+        // remove user from upvotes list, if they already upvoted the comment
+        var index = searchId(com.upvotes,req.user._id);
+        if(index!=-1)
+          com.upvotes.splice(index,1);
+        com.save();
+  		}
+    }
   });
 };
 var decreaseDownvotes = function(req,res)
@@ -97,14 +104,14 @@ var decreaseDownvotes = function(req,res)
   {
     if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
     else
-    {
-		var index = searchId(com.downvotes,req.user._id);
-		if(index!=-1)
-		{
-			com.downvotes.splice(index,1);
-			com.save();
-		} 
-	}    
+    { // remove user from that comment's downvotes list
+      var index = searchId(com.downvotes,req.user._id);
+      if(index!=-1)
+      {
+        com.downvotes.splice(index,1);
+        com.save();
+      } 
+    }    
   });
 };
 
@@ -143,21 +150,21 @@ router.post("/", midw.isLoggedIn ,function(req,res)
             {
               if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
               else{
-                      //add username ,id  and date to comment
-                     com.author.id = req.user._id;
-                     com.author.username = req.user.username;
-                     com.date = getDate();
-                     //save comment
-                     com.save();
-                     
-                     camp.comments.push(com); // add comment to array of comments in current campground
-                     // average rating calculation
+                    //add username ,id  and date to comment
+                    com.author.id = req.user._id;
+                    com.author.username = req.user.username;
+                    com.date = getDate();
+                    //save comment
+                    com.save();
+
+                    camp.comments.push(com); // add comment to array of comments in current campground
+                    // average rating calculation
                     var avg = calculateAverageRating(camp.comments);
                     console.log(com);
                     camp.rating_avg = avg;
-                     camp.save(); // save all changes in current campground
-                     req.flash("successArr","Comment Added!");
-                     res.redirect('/campgrounds/' + camp._id);  // redirect after saving
+                    camp.save(); // save all changes in current campground
+                    req.flash("successArr","Comment Added!");
+res.redirect('/campgrounds/' + camp._id);  // redirect after saving
                 }
             });
         }

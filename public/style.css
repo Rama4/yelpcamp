@@ -116,6 +116,8 @@ pointer-events: none;
 /*material-icons configure:*/
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
 
 /* #009fb7 */
 body
@@ -154,12 +156,6 @@ background: linear-gradient(to left, #283048 , #859398);
 }
 .downvote{
     background-color:#e0e0e0;
-    /*cross-browser support*/
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);  
-    -o-transform: rotate(180deg); 
-    -ms-transform: rotate(180deg);
-    transform: rotate(180deg);           
 }
 .downvote:hover{
     background-color:#d9534f;
@@ -169,12 +165,6 @@ background: linear-gradient(to left, #283048 , #859398);
 }
 .downvoted{
     background-color:#d9534f;
-    /*cross-browser support*/
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);  
-    -o-transform: rotate(180deg); 
-    -ms-transform: rotate(180deg);
-    transform: rotate(180deg);
 }
 .list-of-upvotes , .list-of-downvotes{
     visibility: hidden;
