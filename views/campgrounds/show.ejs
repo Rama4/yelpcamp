@@ -199,16 +199,14 @@
 	<% } %>
 <!-- script for filling horizontal bars and for upvote and downvote action-->
 <script type="text/javascript">
-	// function for passing ejs variable to javascript
-	function htmlDecode(input)
-	{    // for passing EJS variables to javascript
-	  var e = document.createElement('div');
-	  e.innerHTML = input;
-	  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-	}
-	// ratings bar calculation
-	// accessing ejs variable in javascript (ratings)
-	var comms = JSON.parse(htmlDecode("<%= JSON.stringify(ratings)%>"));
+	// accessing ejs variable in javascript (campground,its comments and currentuser)
+	var comms =  <%- JSON.stringify(ratings); %>;
+	var comments =  <%- JSON.stringify(campground.comments); %>;
+	var campgroundId =  <%- JSON.stringify(campground._id); %>;
+	// currentuser -> the one who is logged in
+	var current_user =  <%- JSON.stringify(loggedInUser); %>;
+
+
 	var arr=[0,0,0,0,0,0],fr=[0,0,0,0,0,0];
 	var maxVal=0,ind=0;
 	for(var i=0;i<comms.length;i++)
@@ -240,11 +238,7 @@
 	  $(this).html(fr[c].toString());
 	  c--;
 	});	
-	// accessing ejs variable in javascript (campground,its comments and currentuser)
-	// currentuser -> the one who is logged in
-	var campgroundId = JSON.parse(htmlDecode("<%= JSON.stringify(campground._id)%>"));
-	var comments = JSON.parse(htmlDecode("<%= JSON.stringify(campground.comments)%>"));
-	var current_user = JSON.parse(htmlDecode("<%= JSON.stringify(loggedInUser)%>"));
+	
 	var upvotesArr=[] , downvotesArr=[];
 	for(var i=0;i<comments.length;i++)
 	{

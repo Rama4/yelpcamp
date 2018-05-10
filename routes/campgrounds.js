@@ -157,19 +157,22 @@ router.post("/:id/moderation",function(req,res)
         if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
         else
         {
-            if(req.body.moderation_status == 'approved')
+            if("moderation_status" in req.body)
             {
-                console.log("image for campground:"+req.params.id+" approved!");
-                camp.image_approved = true;
-                camp.save();
-            }
-            else
-            {
-                console.log("Sorry! image for campground:"+req.params.id+" not approved!");
-                camp.image_approved = false;
-                camp.save();
-            }   
-            console.log("image for campground:"+req.params.id+"'s status updated in DB!");
+                if(req.body.moderation_status == 'approved')
+                {
+                    console.log("image for campground:"+req.params.id+" approved!");
+                    camp.image_approved = true;
+                    camp.save();
+                }
+                else if(req.body.moderation_status == 'rejected')
+                {
+                    console.log("Sorry! image for campground:"+req.params.id+" not approved!");
+                    camp.image_approved = false;
+                    camp.save();
+                }
+                console.log("image for campground:"+req.params.id+"'s status updated in DB!");
+            }       
         }
     });
 });

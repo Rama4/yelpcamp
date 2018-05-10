@@ -12,7 +12,8 @@ var exp = require("express"),
     bcrypt = require('bcrypt-nodejs'),
     async = require('async'),
     crypto = require('crypto'),
-    methodoverride = require("method-override");
+    methodoverride = require("method-override"),
+    cookieSession  = require('cookie-session');
     
 //============================================================
 
@@ -59,12 +60,13 @@ app.use(flash());
 
 //Passport Configuration
 //============================================================
-app.use(require("express-session")(
-  {
-    secret : "kabali neruppu da magizhchi",
-    resave : false,
-    saveUninitialized : false
-  }));
+app.use(cookieSession({
+    name: 'session',
+    keys: [process.env.COOKIE_KEY],
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }))
+
 
 app.use(passport.initialize());
 app.use(passport.session());
