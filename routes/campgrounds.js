@@ -151,7 +151,7 @@ router.post("/", midw.isLoggedIn ,function(req,res)
 router.post("/:id/moderation",function(req,res)
 {
     console.log("received moderation response!");
-    console.log(req);
+    console.log(req.body);
     campground.findById(req.params.id).exec(function(err,camp)
     {
         if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}

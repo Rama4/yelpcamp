@@ -47,6 +47,7 @@ mongoose.connect(url);
 //============================================================
 //Parses data input inside the body
 app.use(bp.urlencoded({extended:true}));
+app.use(bp.json());
 
 //serve contents of the home page
 app.set("view engine","ejs");
@@ -99,7 +100,6 @@ app.use("/",indexroutes);
 //============================================================
 
 app.listen(process.env.PORT,process.env.IP,function()
-// app.listen(3000,"127.0.0.1",function()
 {
     console.log("sever started!");
 });
