@@ -29,42 +29,19 @@
                             </div>
                         </div>
 						<!-- ratings bars-->
-                        <div class="col-md-10 col-sm-10 col-xs-10 container horizontal rounded" style="width:205px;">
-    						<div class="row">
-    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">5 <span>&#9733;</span></div>
+						<% var stars = [5,4,3,2,1]; %>
+						<% var bar_colors = ["color-green","color-green","color-green","color-orange","color-red"];%>
+
+						<div class="col-md-10 col-sm-10 col-xs-10 container horizontal rounded" style="width:205px;">
+						<% for(var i=0;i<5;i++){ %>
+							<div class="row">
+    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item"><%=stars[i];%> <span>&#9733;</span></div>
     						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-    						  </div>
+    							         <div class="progress-track"><div class="progress-fill <%=bar_colors[i]%>"></div></div>
+							  </div>
     						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
     						</div>
-    						<div class="row">
-    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">4 <span>&#9733;</span></div>
-    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-    						  </div>
-    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
-    						</div>
-    						<div class="row">
-    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">3 <span>&#9733;</span></div>
-    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-green"></div></div>
-    						  </div>
-    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
-    						</div>
-    						<div class="row">
-    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">2 <span>&#9733;</span></div>
-    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-orange"></div></div>
-    						  </div>
-    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
-    						</div>
-    						<div class="row">
-    						  <div class="col-md-2 col-sm-2 col-xs-2 bar-item">1 <span>&#9733;</span></div>
-    						  <div class="col-md-8 col-sm-8 col-xs-8 progress-bar horizontal">
-    							         <div class="progress-track"><div class="progress-fill color-red"></div></div>
-    						  </div>
-    						  <div class="col-md-2 col-sm-2 col-xs-2 ff" style="width:75px;"></div>
-    						</div>
+    					<% } %>
                         </div>
                     </div>    <!--  end ratings distribution-->
                     <!-- Campground Buttons: -->
