@@ -8,7 +8,7 @@ var campschema = new mongoose.Schema(
     rating_avg : String,
     date_created : String,
     info : [String],
-    image_approved : Boolean,
+    image_approved : Number,
     author : {
         id : {
             type : mongoose.Schema.Types.ObjectId,

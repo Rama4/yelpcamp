@@ -3,12 +3,14 @@
     <div class="row">
         <div class="col-md-9">
             <div class="thumbnail">
-				<%if(("image_approved" in campground && campground.image_approved == true) || !campground.image || (campground.author.id && currentuser && campground.author.id.equals(currentuser._id)) ){ %>
-					<img class="img-responsive photo" src="<%=campground["image"]%>">					
-				<% } else if("image_approved" in campground && campground.image_approved == false){ %>
-					<h4 style="text-align: center">Image rejected.</h4>
-				<% } else { %>
-					<h4 style="text-align: center">Image awaiting moderation.</h4>
+				<%if("image_approved" in campground && campground.image_approved == 1) %>
+					<img class="img-responsive photo" src="<%=campground["image"]%>">
+				<% } else if(campground.author.id && currentuser && campground.author.id.equals(currentuser._id)){ %>
+					<% if("image_approved" in campground && campground.image_approved == -1){ %>
+						<h4 style="text-align: center">Image rejected.</h4>
+					<% } else { %>
+						<h4 style="text-align: center">Image awaiting moderation.</h4>
+					<% } %>
 				<% } %>
                 <div class="caption-full">
                     <h4><a><%=campground.name%></a></h4>

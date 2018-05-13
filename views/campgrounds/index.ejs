@@ -14,12 +14,14 @@
         <% for( camp of camps ) {%>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
-                    <%if(("image_approved" in camp && camp.image_approved == true) || !camp.image || (camp.author.id && currentuser && camp.author.id.equals(currentuser._id)) ){ %>
+                    <%if("image_approved" in camp && camp.image_approved == 1) { %>
                         <img src="<%=camp.image%>" >
-                    <% } else if("image_approved" in camp && camp.image_approved == false){ %>
-                        <h4 style="text-align: center">Image rejected.</h4>
-                    <% } else { %>
-                        <h4 style="text-align: center">Image awaiting moderation.</h4>
+                    <% } else if(camp.author.id && currentuser && camp.author.id.equals(currentuser._id)){ %>
+                        <% if("image_approved" in camp && camp.image_approved == -1){ %>
+                            <h4 style="text-align: center">Image rejected.</h4>
+                        <% } else { %>
+                            <h4 style="text-align: center">Image awaiting moderation.</h4>
+                        <% } %>
                     <% } %>
                 <div class="caption">
                      <h4> <%=camp.name%></h4>

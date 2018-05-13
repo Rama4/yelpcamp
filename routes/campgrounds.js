@@ -35,7 +35,7 @@ var moderate = function(img_url,campid)
 }
 //--------------------------------------------------------------------
 
-var foo = function(campid, new_camp, callback)
+var moderate_updated_image = function(campid, new_camp, callback)
 {
     // find camp and compare old img url with new url
     campground.findById(campid).exec(function(err,old_camp)
@@ -129,7 +129,7 @@ router.post("/", midw.isLoggedIn ,function(req,res)
           date_created : date,
           info : information,
           rating_avg : rating,
-          image_approved : false
+          image_approved : 0
       }
     campground.create(newcampground ,function(err,campground)
     {
@@ -162,13 +162,13 @@ router.post("/:id/moderation",function(req,res)
                 if(req.body.moderation_status == 'approved')
                 {
                     console.log("image for campground:"+req.params.id+" approved!");
-                    camp.image_approved = true;
+                    camp.image_approved = 1;
                     camp.save();
                 }
                 else if(req.body.moderation_status == 'rejected')
                 {
                     console.log("Sorry! image for campground:"+req.params.id+" not approved!");
-                    camp.image_approved = false;
+                    camp.image_approved = -1;
                     camp.save();
                 }
                 console.log("image for campground:"+req.params.id+"'s status updated in DB!");
@@ -188,7 +188,7 @@ router.get("/:id/edit",midw.checkCampgroundOwnership, function(req,res)
 // UPDATE Route
 router.put("/:id",function(req,res)
 {    // find and update the correct campground
-    foo(req.params.id, req.body.campground, function()
+    moderate_updated_image(req.params.id, req.body.campground, function()
     {
         campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedcampground)
         {
