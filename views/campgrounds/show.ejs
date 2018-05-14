@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-9">
             <div class="thumbnail">
-				<%if("image_approved" in campground && campground.image_approved == 1) %>
+				<% if("image_approved" in campground && campground.image_approved == 1){ %>
 					<img class="img-responsive photo" src="<%=campground["image"]%>">
 				<% } else if(campground.author.id && currentuser && campground.author.id.equals(currentuser._id)){ %>
 					<% if("image_approved" in campground && campground.image_approved == -1){ %>
