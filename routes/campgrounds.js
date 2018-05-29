@@ -91,7 +91,24 @@ router.get("/:id",function(req,res)
     .exec(function(err,foundcamp)
     {
         if(err)
-            console.log(err);
+        {    
+            if (err.name && err.name == 'CastError')
+            {
+                if(err.message) console.log(err.message);
+                console.log("Campground not found!");    
+                res.status(404).send("Campground not found!");
+            }
+            else
+            {    
+                console.log(err);
+                res.status(500).send("Sorry! an error occurred!");
+            }
+        }
+        else if(!foundcamp)
+        {    
+            console.log("Campground not found!");
+            res.status(404).send("Campground not found!");
+        }
         else
         {   //populate upvotes and downvotes in foundcamp
             campground.populate(foundcamp, 
@@ -100,7 +117,10 @@ router.get("/:id",function(req,res)
                         model: 'user',
                     }, function(err, popcamp) {
                         if (err)
+                        {   
                             console.log(err);
+                            res.status(500).send("Sorry! an error occurred!");
+                        }
                         else
                             res.render("campgrounds/show",{campground : popcamp});   
                     });
