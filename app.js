@@ -112,6 +112,6 @@ app.use("/",indexroutes);
 // app.listen(3000,"localhost",function()
 app.listen(process.env.PORT, process.env.IP, function()
 {
-    console.log(`sever running at http://${IP}:${PORT}`);
+    console.log(`Server started!`);
 });
 module.exports = app;
