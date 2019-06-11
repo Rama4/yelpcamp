@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router({mergeParams : true});
-var campground = require("../modules/campground");
-var Comment = require("../modules/comment");
+var campground = require("../models/campground");
+var Comment = require("../models/comment");
 var midw = require("../middleware/index.js"); //index.js is the default file whenever we 'require' something
 // so its enough if we just require the folder containing index.js file
 // i.e var midw = require("../middleware");
@@ -36,7 +36,6 @@ var searchId = function(arr,val)
   for(var i=0;i<arr.length;i++)
   {    if(arr[i].equals(val))
       {
-        console.log("done already!");
         return i;
       }
   }

@@ -1,6 +1,6 @@
 var mongoose = require("mongoose") ,
-campground = require("../modules/campground"),
-Comment = require("../modules/comment");
+campground = require("../models/campground"),
+Comment = require("../models/comment");
 
 var data = [
   {
@@ -57,7 +57,7 @@ function seedDB()
 {
 
   // remove all campgrounds
-  campground.remove({},function(err)
+  campground.deleteMany({}, function(err)
   {
 
       if(err)

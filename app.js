@@ -13,16 +13,17 @@ var exp = require("express"),
     async = require('async'),
     crypto = require('crypto'),
     methodoverride = require("method-override"),
-    cookieSession  = require('cookie-session');
+    cookieSession  = require('cookie-session'),
+    dotenv = require('dotenv').config(); // for managing environment variables stored in .env file
     
 //============================================================
 
 //models
 //============================================================
 
-    var campground = require("./modules/campground"),
-     Comment = require("./modules/comment"),
-     user = require("./modules/user"),
+    var campground = require("./models/campground"),
+     Comment = require("./models/comment"),
+     user = require("./models/user"),
      seedDB = require("./views/seeds");
 // seedDB(); // exported from seeds.js
 //============================================================
@@ -40,7 +41,15 @@ var exp = require("express"),
 var url = process.env.DATABASEURL || 'mongodb://localhost/yelp_camp';
 mongoose.Promise = global.Promise;
 mongoose.set('debug', false);
-mongoose.connect(url);
+// fix deprecation warnings
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
+mongoose.connect(url, (err) => {
+  if(err) console.log("Error occurred while connecting to DB:", err);
+  else  console.log("DB connected successfully!");
+});
 
 
 
@@ -100,10 +109,11 @@ app.use("/campgrounds",campgroundroutes);
 app.use("/",indexroutes);
 
 //============================================================
-
+const PORT = process.env.PORT || 3000;
+const IP = process.env.IP || "localhost";
 // app.listen(3000,"localhost",function()
-app.listen(process.env.PORT,process.env.IP,function()
+app.listen(PORT, IP, function()
 {
-    console.log("sever started!");
+    console.log(`sever running at http://${IP}:${PORT}`);
 });
 module.exports = app;

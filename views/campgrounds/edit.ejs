@@ -21,7 +21,7 @@
                  <div class="form-group">
                     <label  class="col-lg-3 control-label"><%=labels[i]%></label>
                     <div  class="col-lg-9">
-                        <input class="form-control"  type="text" name="info["<%= i %>"]" value="<%= campground.info[i] %>">
+                        <input class="form-control"  type="text" name="campground[info][<%= i %>]" value="<%= campground.info[i] %>">
                     </div>
                 </div>
                 <% } %>

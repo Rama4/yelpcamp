@@ -133,17 +133,24 @@
 						<div class="container" style="overflow:auto;" >
 							<br>
 							<div class="row" >
-								<% for( var i=0; i< camps.length; i++ ) {%>
+								<% for( let camp of camps ) { %>
 									<div class="col-md-3 col-sm-6">
-										<div class="thumbnail">
-											<img src="<%=camps[i].image%>" >
-										<div class="caption">
-											 <h4> <%=camps[i].name%></h4>
-										</div>
-										<p style="margin:auto; text-align:center;">
-											<a href="/campgrounds/<%= camps[i]._id %>" class="btn btn-primary"><i class="fa fa-info-circle"></i> More info</a>
-										</p>
-										</div>
+										<a href="/campgrounds/<%= camp._id %>" class="thumbnail">
+											<% if(camp.image.length)
+											{
+												if("image_approved" in camp && camp.image_approved == true)
+												{ %>
+													<img src="<%=camp.image%>" >
+												<% }
+												else if(camp.author.id && currentuser && (camp.author.id.equals(currentuser._id) || currentuser.username === "ADMIN"))
+												{
+													if("image_approved" in camp && camp.image_approved == false){ %>
+														<p style="text-align: center">Image rejected</p>
+													<% }
+												}
+											} %>
+											<h4 class="text-center"><%=camp.name%></h4>
+										</a>
 									</div>
 								<% } %>
 							</div>

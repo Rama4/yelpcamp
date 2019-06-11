@@ -3,19 +3,22 @@
     <div class="row">
         <div class="col-md-9">
             <div class="thumbnail">
-				<% if("image_approved" in campground && campground.image_approved == 1){ %>
-					<img class="img-responsive photo" src="<%=campground["image"]%>">
-				<% } else if(campground.author.id && currentuser && campground.author.id.equals(currentuser._id)){ %>
-					<% if("image_approved" in campground && campground.image_approved == -1){ %>
-						<h4 style="text-align: center">Image rejected.</h4>
-					<% } else { %>
-						<h4 style="text-align: center">Image awaiting moderation.</h4>
-					<% } %>
-				<% } %>
-                <div class="caption-full">
-                    <h4><a><%=campground.name%></a></h4>
-                    <pre><%= campground.description %></pre>
-                    <p><em>Submitted By <strong><%= campground.author.username %></strong> on <%=campground.date_created%></em></p>
+				<% if(camp.image.length)
+				{
+					if("image_approved" in camp && camp.image_approved == true)
+					{ %>
+						<img src="<%=camp.image%>" >
+					<% }
+					else if(camp.author.id && currentuser && (camp.author.id.equals(currentuser._id) || currentuser.username === "ADMIN"))
+					{
+						if("image_approved" in camp && camp.image_approved == false){ %>
+							<p style="text-align: center">Image rejected</p>
+						<% }
+					}
+				} %>
+                <div class="caption-full">				
+                    <pre><%= camp.description %></pre>
+                    <p><em>Submitted By <strong><%= camp.author.username %></strong> on <%=camp.date_created%></em></p>
                     <!-- ratings distribution-->
 					<div class="row" id="ratingbar" style="margin-left:0; width:315px;">
                         <!-- 
@@ -24,10 +27,10 @@
                         -->
                         <div class="col-md-2 col-sm-2 col-xs-2" style="width:110px;">
                             <div class="row">
-                                <h3 style="color:black;"><strong><%=campground.rating_avg%>  <span style="color:black;">&#9733;</span></strong></h3>
+                                <h3 style="color:black;"><strong><%=camp.rating_avg%>  <span style="color:black;">&#9733;</span></strong></h3>
                             </div>
                             <div class="row">
-                                <strong>(<%=campground.comments.length%> rating<%if(campground.comments.length!=1){%>s<% }%>)</strong>
+                                <strong>(<%=camp.comments.length%> rating<%if(camp.comments.length!=1){%>s<% }%>)</strong>
                             </div>
                         </div>
 						<!-- ratings bars-->
@@ -47,9 +50,9 @@
                         </div>
                     </div>    <!--  end ratings distribution-->
                     <!-- Campground Buttons: -->
-                    <%if(campground.author.id && currentuser && campground.author.id.equals(currentuser._id)){%>
-                    <a class = "btn btn-warning" href="/campgrounds/<%= campground._id %>/edit" >Edit Campground</a>
-                    <form id="deleteform" action = "/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                    <%if(camp.author.id && currentuser && (camp.author.id.equals(currentuser._id) || currentuser.username === "ADMIN")){%>
+                    <a class = "btn btn-warning" href="/campgrounds/<%= camp._id %>/edit" >Edit Campground</a>
+                    <form id="deleteform" action = "/campgrounds/<%=camp._id%>?_method=DELETE" method="POST">
 						<button class = "btn btn-danger"  >Delete Campground</button>
                     </form>
                     <% } %>
@@ -57,12 +60,12 @@
             </div>
            <div class="well"><!--comments section-->
                 <div class="text-right">
-					<a class="btn btn-success" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+					<a class="btn btn-success" href="/campgrounds/<%= camp._id %>/comments/new">Add New Comment</a>
                 </div>
                 <hr>
                 <!-- Comments list -->
-                <% for(var i=0;i<campground.comments.length;i++){ %>
-					<%  var com = campground.comments[i]; %>
+                <% for(var i=0;i<camp.comments.length;i++){ %>
+					<%  var com = camp.comments[i]; %>
                     <div class="row">
 						<div class="row">
 							<div class="col-md-9">
@@ -97,10 +100,10 @@
 							</div>
 							<!--upvote and downvote buttons-->
 							<div class="col-md-2  col-sm-2 col-xs-2 text-center" style="padding:0 10px; ">
-								<form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/upvote" method="POST">
+								<form action="/campgrounds/<%= camp._id %>/comments/<%=com._id%>/upvote" method="POST">
 									<button class="btn upvote btn-xs"><i class="material-icons md-18">thumb_up</i></button>
 								</form>
-								<form action="/campgrounds/<%= campground._id %>/comments/<%=com._id%>/downvote" method="POST">
+								<form action="/campgrounds/<%= camp._id %>/comments/<%=com._id%>/downvote" method="POST">
 								   <button class="btn downvote btn-xs"><i class="material-icons md-18">thumb_down</i></button>
 								</form>
 							</div>
@@ -119,15 +122,15 @@
 							</div>                           
 						</div><!--end voting info-->
 						<!-- edit and delete comment buttons: -->	
-						<%if(currentuser && com.author.id.equals(currentuser._id)){%>
+						<%if(currentuser && (com.author.id.equals(currentuser._id) || currentuser.username === "ADMIN")){%>
 						<div class="row" style="margin-right:0;">
 							<div class="pull-right">
-								<form id="deleteform" action = "/campgrounds/<%=campground._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
+								<form id="deleteform" action = "/campgrounds/<%=camp._id%>/comments/<%=com._id%>?_method=DELETE" method="POST">
 								<button class = "btn btn-xs btn-danger"  >Delete</button>
 								</form> 
 							</div>
 							<div class="pull-right">
-								<a class = "btn btn-xs btn-warning" href="/campgrounds/<%=campground._id%>/comments/<%= com._id%>/edit" >Edit</a>
+								<a class = "btn btn-xs btn-warning" href="/campgrounds/<%=camp._id%>/comments/<%= com._id%>/edit" >Edit</a>
 							</div>
 						</div>
 						<% } %>
@@ -137,18 +140,18 @@
             </div>
         </div>       
 	   <div class="col-md-3 infolist">
-            <p class="lead"><%=campground.name%></p>
+            <h3 style="color:#f0f0f0;"><%=camp.name%></h3>
             <% var labels = [ "Location:","Price ($/Night):","Amenities:","Booking Window:"] ; %>
             <div class="list-group">
-                <%for(var i=0;i<campground.info.length;i++){%>
+                <%for(var i=0;i<camp.info.length;i++){%>
                     <%if(labels[i] != "Amenities:"){%>
                     <li class="list-group-item listnana">
 						<h4><%=labels[i]%></h4>
-						<p><%=campground.info[i]%></p>
+						<p><%=camp.info[i]%></p>
                     </li>
                     <% }%>
                     <% if(labels[i] == "Amenities:"){ %>
-                        <%var amen  = campground.info[i].split(",");%>
+                        <%var amen  = camp.info[i].split(",");%>
                         <li class="list-group-item listnana">
                             <h4><%=labels[i]%></h4>
                             <ul>
@@ -173,15 +176,15 @@
 		the work-around is simple, just check here and use another var loggedInUser
 		only if loggedInUser != "none", do required work (highlighting their upvoted and downvoted comments)
 	-->
-	<%for(var i=0;i<campground.comments.length;i++){%>
-		<% ratings.push(campground.comments[i].rating_value); %>
+	<%for(var i=0;i<camp.comments.length;i++){%>
+		<% ratings.push(camp.comments[i].rating_value); %>
 	<% } %>
 <!-- script for filling horizontal bars and for upvote and downvote action-->
 <script type="text/javascript">
-	// accessing ejs variable in javascript (campground,its comments and currentuser)
+	// accessing ejs variable in javascript (camp,its comments and currentuser)
 	var comms =  <%- JSON.stringify(ratings); %>;
-	var comments =  <%- JSON.stringify(campground.comments); %>;
-	var campgroundId =  <%- JSON.stringify(campground._id); %>;
+	var comments =  <%- JSON.stringify(camp.comments); %>;
+	var campgroundId =  <%- JSON.stringify(camp._id); %>;
 	// currentuser -> the one who is logged in
 	var current_user =  <%- JSON.stringify(loggedInUser); %>;
 

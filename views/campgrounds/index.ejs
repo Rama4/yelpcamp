@@ -3,33 +3,31 @@
 <header class="jumbotron">
    <div class="container">
         <h1>Welcome to YelpCamp!</h1>
-        <p>View our hand-picked campgrounds from all over the world!<p>
+        <p>View our hand-picked campgrounds from all over the world! Click on any campground to view information.<p>
         <p ><a class="btn btn-primary btn-large" href="/campgrounds/new" >Add a New Campground</a></p>
    </div>
 </header>
 <div class="container">
-
      <br>
     <div class="row" style="display:flex; flex-wrap:wrap;">
         <% for( camp of camps ) {%>
             <div class="col-md-3 col-sm-6">
-                <div class="thumbnail">
-                    <%if("image_approved" in camp && camp.image_approved == 1) { %>
-                        <img src="<%=camp.image%>" >
-                    <% } else if(camp.author.id && currentuser && camp.author.id.equals(currentuser._id)){ %>
-                        <% if("image_approved" in camp && camp.image_approved == -1){ %>
-                            <h4 style="text-align: center">Image rejected.</h4>
-                        <% } else { %>
-                            <h4 style="text-align: center">Image awaiting moderation.</h4>
-                        <% } %>
-                    <% } %>
-                <div class="caption">
-                     <h4> <%=camp.name%></h4>
-                </div>
-                <p style="margin:auto; text-align:center;">
-                    <a href="/campgrounds/<%= camp._id %>" class="btn btn-primary"><i class="fa fa-info-circle"></i> More info</a>
-                </p>
-                </div>
+                <a href="/campgrounds/<%= camp._id %>" class="thumbnail">
+                    <% if(camp.image.length)
+                    {
+                        if("image_approved" in camp && camp.image_approved == true)
+                        { %>
+                            <img src="<%=camp.image%>" >
+                        <% }
+                        else if(camp.author.id && currentuser && (camp.author.id.equals(currentuser._id) || currentuser.username === "ADMIN"))
+                        {
+                            if("image_approved" in camp && camp.image_approved == false){ %>
+                                <p style="text-align: center">Image rejected</p>
+                            <% }
+                        }
+                    } %>
+                    <h4 class="text-center"><%=camp.name%></h4>
+                </a>
             </div>
         <% } %>
     </div>

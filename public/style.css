@@ -1,4 +1,4 @@
-h1 , .lead, .footer{
+h1 , a, .lead, .footer{
   color : #e0e0e0;
 }
 .photo{
@@ -9,6 +9,17 @@ h1 , .lead, .footer{
 .thumbnail, .horizontal .progress-bar{
   background:#f0f0f0;
 }
+a.thumbnail{
+  text-decoration: none;
+  color:#232323;
+  background: #e0e0e0;
+}
+a.thumbnail:hover{
+  text-decoration: none;
+  color:#f0f0f0;
+  background: #283048;
+}
+
 /*------------------NAVBAR------------------------------------------------------------------------------*/
 /*underline links when hovered upon */
 .nav>li>a {
@@ -235,7 +246,7 @@ pre{
 @media (min-width: 768px) {
     /* For mobile phones: */
 .infolist {  /*make infolist responsive in show page*/
-    position: relative;
+    position: fixed;
     z-index:0;
   }
 

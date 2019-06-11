@@ -2,10 +2,16 @@ var express = require("express");
 var bp = require("body-parser");
 var cloudinary = require('cloudinary'); // for content modereation
 var router = express.Router({mergeParams : true});
-var campground = require("../modules/campground");
+var campground = require("../models/campground");
 var midw = require("../middleware/index.js"); //index.js is the default file whenever we 'require' something
 // so its enough if we just require the folder containing index.js file
 // i.e var midw = require("../middleware");
+//--------------------------------------------------------------------
+cloudinary.config({ 
+    cloud_name: process.env.cloudinary_name, 
+    api_key: process.env.cloudinary_api_key,
+    api_secret: process.env.cloudinary_api_secret
+  });
 //--------------------------------------------------------------------
 var getDate = function(){
   var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -13,28 +19,6 @@ var getDate = function(){
   return day+"-"+month+"-"+year;
 };
 //--------------------------------------------------------------------
-var moderate = function(img_url,campid)
-{
-    var notification_url = "https://rama-yelpcamp.herokuapp.com/campgrounds/"+campid+"/moderation";
-    console.log("notification_url= "+notification_url);
-    cloudinary.uploader.upload(
-        img_url,
-        function(result)
-        { 
-            console.log(result);
-            if(result.error)
-            { console.log("Error while uploading image to cloudinary!"); }
-            else
-            { console.log("image is uploaded!\npending moderation..."); }
-        }, 
-        { 
-            moderation: "webpurify",
-            notification_url: notification_url
-        }
-    );
-}
-//--------------------------------------------------------------------
-
 var moderate_updated_image = function(campid, new_camp, callback)
 {
     // find camp and compare old img url with new url
@@ -43,19 +27,15 @@ var moderate_updated_image = function(campid, new_camp, callback)
         if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
         else
         {
-            // if change is detected, send it for moderation
+            // if change is detected, send it for moderation, and save changes to the original campground
             if(old_camp.image != new_camp.image)
-                moderate(new_camp.image,campid);
+                moderate_image(new_camp, function(moderated_camp)
+                {
+                    callback(moderated_camp);
+                });
         }    
     });
-    callback();
 }
-//--------------------------------------------------------------------
-cloudinary.config({ 
-    cloud_name: 'rama4', 
-    api_key: process.env.cloudinary_api_key,
-    api_secret: process.env.cloudinary_api_secret
-  });
 //--------------------------------------------------------------------
 // index  -> show all campgrounds
 router.get("/",function(req,res)
@@ -76,7 +56,7 @@ router.get("/new", midw.isLoggedIn , function(req,res)
     res.render("campgrounds/newcamp");
 });
 //*************************************************************************
-// show rout
+// show route
 //*************************************************************************
 router.get("/:id",function(req,res)
 {   //  populating comments in foundcamp and also upvotes and downvotes for each comment
@@ -122,79 +102,110 @@ router.get("/:id",function(req,res)
                             res.status(500).send("Sorry! an error occurred!");
                         }
                         else
-                            res.render("campgrounds/show",{campground : popcamp});   
+                            res.render("campgrounds/show",{camp : popcamp});   
                     });
         }
     });
     
 });
+
+function moderate_image(camp, callback)
+{
+    if(camp.image)
+    {
+        if(process.env.MODERATION_ENABLED === "true")
+        {
+            console.log("mod enabled");
+            cloudinary.v2.uploader.upload( camp.image, { moderation: "aws_rek" }, function(err, result)
+            { 
+                if(err)
+                { 
+                    console.log("Error while moderating image: ", err);
+                    callback(camp);
+                }
+                else
+                {
+                    console.log("Moderation result:", result);
+                    if(result.moderation && result.moderation.length > 0)
+                    {
+                        let verdict = result.moderation[0].status;
+                        camp.image_approved = verdict === "approved";
+                        callback(camp);
+                    }
+                    else
+                    {
+                        console.log("Wrong format of Moderation response.. Rejecting image..")
+                        camp.image_approved = false;
+                        callback(camp);
+                    }
+                }
+            });
+        }
+        else
+        {
+            console.log("Moderation disabled! Image will be shown!");
+            camp.image_approved = true;
+            callback(camp);
+        }
+    }
+    else
+    {
+        console.log("No image specified!");
+        // remove "image_approved" key from campground, so no need to display moderation result
+        camp.image_approved = false;
+        callback(camp);
+    }
+}
+
 // add a new campground
 router.post("/", midw.isLoggedIn ,function(req,res)
 {
-    var data=req.body.cname;
-    var url=req.body.link;
-    var desc=req.body.description;
-    var rating= "N/A";
-    var date = getDate();
-    var information = req.body.info;
-    var author  = {
-      id: req.user._id,
-      username : req.user.username
-    }
     var newcampground =  {
-          name: data ,
-          image : url ,
-          description : desc,
-          author : author,
-          date_created : date,
-          info : information,
-          rating_avg : rating,
-          image_approved : 0
+        name: req.body.cname ,
+        image : req.body.link,
+        description : req.body.description,
+        author : {
+            id: req.user._id,
+            username : req.user.username
+        },
+        date_created : getDate(),
+        info : req.body.info,
+        rating_avg : "N/A",
       }
-    campground.create(newcampground ,function(err,campground)
+      
+    if(newcampground.image.length)
     {
-        if(err)
+        moderate_image(newcampground, function(moderated_camp)
         {
-          req.flash("errorArr",err.message);
-        }
-        else
+            campground.create(moderated_camp ,function(err,campground)
+            {
+                if(err)
+                {
+                req.flash("errorArr",err.message);
+                }
+                else
+                {
+                    req.flash("successArr","New Campground added successfully! Awaiting image moderation..");
+                    res.redirect("/campgrounds/"+campground._id);
+                }
+            });
+        });
+    }
+    else
+    {
+        campground.create(newcampground ,function(err, created_camp)
+        {
+            if(err)
+            {
+            req.flash("errorArr",err.message);
+            }
+            else
             {
                 req.flash("successArr","New Campground added successfully! Awaiting image moderation..");
-                res.redirect("/campgrounds/"+campground._id);
-                if(url.length)
-                    moderate(url,campground._id);               
+                res.redirect("/campgrounds/"+created_camp._id);
             }
-    });
-});
-
-// Update image moderation status
-router.post("/:id/moderation",function(req,res)
-{
-    console.log("received moderation response!");
-    console.log(req.body);
-    campground.findById(req.params.id).exec(function(err,camp)
-    {
-        if(err){	req.flash("errorArr",err.message);	res.redirect("/campgrounds");	}
-        else
-        {
-            if("moderation_status" in req.body)
-            {
-                if(req.body.moderation_status == 'approved')
-                {
-                    console.log("image for campground:"+req.params.id+" approved!");
-                    camp.image_approved = 1;
-                    camp.save();
-                }
-                else if(req.body.moderation_status == 'rejected')
-                {
-                    console.log("Sorry! image for campground:"+req.params.id+" not approved!");
-                    camp.image_approved = -1;
-                    camp.save();
-                }
-                console.log("image for campground:"+req.params.id+"'s status updated in DB!");
-            }       
-        }
-    });
+        });
+    }
 });
 
 // EDIT Route
@@ -208,20 +219,20 @@ router.get("/:id/edit",midw.checkCampgroundOwnership, function(req,res)
 // UPDATE Route
 router.put("/:id",function(req,res)
 {    // find and update the correct campground
-    moderate_updated_image(req.params.id, req.body.campground, function()
+    moderate_updated_image(req.params.id, req.body.campground, function(moderated_camp)
     {
-        campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedcampground)
+        campground.findByIdAndUpdate(req.params.id, moderated_camp, function(err)
         {
-        if(err)
-        {
-            req.flash("errorArr",err.message);
-            res.redirect("/campgrounds");
-        }
-        else
-        {  // redirect somewhere
-            req.flash("successArr","Campground Updated!");
-            res.redirect("/campgrounds/"+req.params.id);
-        }
+            if(err)
+            {
+                req.flash("errorArr",err.message);
+                res.redirect("/campgrounds");
+            }
+            else
+            {  // redirect somewhere
+                req.flash("successArr","Campground Updated!");
+                res.redirect("/campgrounds/"+req.params.id);
+            }
         });
     });
 });

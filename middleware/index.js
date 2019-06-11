@@ -1,5 +1,5 @@
-var campground = require("../modules/campground");
-var Comment = require("../modules/comment");
+var campground = require("../models/campground");
+var Comment = require("../models/comment");
 var mo = {};
 
 
@@ -18,7 +18,7 @@ mo.checkCampgroundOwnership = function(req, res, next)
              }
              else
                 // does user own the campground?
-                if(foundCampground.author.id.equals(req.user._id))  // main-line
+                  if(foundCampground.author.id.equals(req.user._id) || req.user.username === "ADMIN")  // main-line
                 {
                     next();
                 }
@@ -49,7 +49,7 @@ mo.checkCommentOwnership = function (req, res, next)
              }
              else
                  // does user own the comment?
-              if(foundComment.author.id.equals(req.user._id))  // main-line
+              if(foundComment.author.id.equals(req.user._id) || req.user.username === "ADMIN")  // main-line
                     next();
                  else
                  {
