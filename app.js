@@ -109,10 +109,8 @@ app.use("/campgrounds",campgroundroutes);
 app.use("/",indexroutes);
 
 //============================================================
-const PORT = process.env.PORT || 3000;
-const IP = process.env.IP || "localhost";
 // app.listen(3000,"localhost",function()
-app.listen(PORT, IP, function()
+app.listen(process.env.PORT, process.env.IP, function()
 {
     console.log(`sever running at http://${IP}:${PORT}`);
 });
