@@ -33,6 +33,8 @@ var moderate_updated_image = function(campid, new_camp, callback)
                 {
                     callback(moderated_camp);
                 });
+            else
+                callback(new_camp);
         }    
     });
 }
@@ -217,7 +219,7 @@ router.get("/:id/edit",midw.checkCampgroundOwnership, function(req,res)
 });
 
 // UPDATE Route
-router.put("/:id",function(req,res)
+router.put("/:id", function(req,res)
 {    // find and update the correct campground
     moderate_updated_image(req.params.id, req.body.campground, function(moderated_camp)
     {
