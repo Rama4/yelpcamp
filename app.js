@@ -111,7 +111,7 @@ app.use("/",indexroutes);
 //Run the server
 //============================================================
 const port = process.env.PORT || 3000;
-const ip = process.env.IP || "localhost";
+const ip = process.env.IP || "0.0.0.0";
 
 // app.listen(3000,"localhost",function()
 app.listen(port, ip, function()
