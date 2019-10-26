@@ -4,32 +4,31 @@
 ## Overview:
 > <p> This is a small project of Colt Steele's <em>Web Developer Bootcamp</em> course in udemy.</p>
 > <p> In this website, Users can create new <em>campgrounds</em> and comment and rate other's 
-<em>campgrounds</em>.
-</p>
+> <em>campgrounds</em>.</p>
 
 ## Usage:
 
->### Prerequisites:
+### Prerequisites:
  - [Express.js](http://expressjs.com) - Express framework
  - [MongoDB](https://www.mongodb.com/) - MongoDB NoSQL database
  - [Node.js](https://Node.js.org/en/download/) - Node.js
  
->This guide will help you to install *Node.js* and *npm*:
->https://docs.npmjs.com/getting-started/installing-node
+This guide will help you to install *Node.js* and *npm*:
+https://docs.npmjs.com/getting-started/installing-node
 
->### Running Application:
+### Running Application:
 
 1. Run `mongod` command to start the MongoDB daemon.
 
 2. In another terminal window, run these commands:
 ```
 git clone https://github.com/Rama4/yelpcamp.git
-cd <path to yelpcamp folder>
+cd yelpcamp
 npm install
 npm start
 ```
-3. Browse to http://localhost:3000
-
+3. Browse to the url given in the output.<br/>
+Example: if the output is : ```Server running at http://localhost:3000``` then visit http://localhost:3000 in the browser.
 
 ## Technologies used:
 
