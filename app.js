@@ -108,10 +108,14 @@ app.use("/campgrounds/:id/comments",commentroutes);
 app.use("/campgrounds",campgroundroutes);
 app.use("/",indexroutes);
 
+//Run the server
 //============================================================
+const port = process.env.PORT || 3000;
+const ip = process.env.IP || "localhost";
+
 // app.listen(3000,"localhost",function()
-app.listen(process.env.PORT, process.env.IP, function()
+app.listen(port, ip, function()
 {
-    console.log(`Server started!`);
+    console.log(`Server running at http://${ip}:${port}`);
 });
 module.exports = app;
